@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oikos Orchard & Farm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#home">
+                <img src="OikosOF.png" alt="Oikos Logo" class="navbar-logo me-2">Oikos Orchard & Farm
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('image.png') center/cover no-repeat; min-height: 600px;">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-lg-6 text-white">
+                    <h1 class="display-4 fw-bold mb-4">Fresh & Organic Farming</h1>
+                    <p class="lead mb-4">Grow  farm sustainably with our premium organic products and expert guidance. Join thousands of farmers already transforming their agriculture.</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#contactModal">Get Started</button>
+                        <button class="btn btn-outline-light btn-lg" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})">Learn More</button>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <i class=""></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="about-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; width: 100%; height: 400px; color: white;">
+                        <div style="text-align: center; padding: 20px;">
+                            <i style="font-size: 60px; margin-bottom: 20px; display: block;" class="fas fa-video"></i>
+                            <p style="font-size: 18px; margin: 0; font-weight: 500;">Farm Video Coming Soon</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h2 class="section-title">About Our Oikos Orchard & Farm</h2>
+                    <p class="text-muted mb-3">Oikos Orchard and Farm is an agricultural tourist destination located at Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines. The farm produces thousands of fruits and Philippine native tree seedlings of diﬀerent kinds, that were planted and grown ﬁrst hand by Oikos’ farmers in their own nursery. Apart from that, Oikos Orchard and farm, grows fruit and vegetables, raises native animals, such as goats, chickens and hogs. The farm also oﬀers glamping accommodations for nature lovers and adventurous people alike.</p>
+                    <p class="text-muted mb-4">Oikos Orchard and Farm is a sustainable, high density, picturesque agritourism farm destination. The farm was established in 2021, by Bernard Restiﬁcar and Myrma Restiﬁcar. The farm aims to be the ﬁrst tourism park of fruit-bearing and Philippine native trees in the Philippines. Its name derives from the word, ‘Oikos’ – an ancient Greek term which refers to three related but distinct concepts namely, the family, the family’s property, and the house. This word is also infused with a great deal of meaning, hope, and promise. Oikos Orchard and Farm is an assurance of home away from home.</p>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>100% Organic Certified Products</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Expert Agricultural Consultation</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Sustainable Farming Practices</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>24/7 Customer Support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Our Services</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h5 class="mt-3 mb-2">Farm Tour</h5>
+                        <p class="text-muted">Experience the farm up close. Our guided farm tour offers a walk through orchards, gardens, and regenerative systems—sharing stories of the land, the plants, and the people who care for them.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <h5 class="mt-3 mb-2">Car Glamping</h5>
+                        <p class="text-muted">Turn your car into your basecamp. Car Glamping is a modern camping experience where mobility meets nature—perfect for travelers, explorers, and weekend adventurers who want freedom, flexibility, and scenic nights under the stars.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h5 class="mt-3 mb-2">Glamping</h5>
+                        <p class="text-muted">Nature, comfort, and calm—glamping offers a relaxing outdoor stay with the ease of modern comforts, set in a serene natural environment.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h5 class="mt-3 mb-2">Seedlings</h5>
+                        <p class="text-muted">These seedlings are propagated in healthy, living soil to build resilience from the start. Selected for adaptability and vitality, they support food forests, regenerative farms, and sustainable landscapes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Featured Products</h2>
+            <div id="productsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#productsCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#productsCarousel" data-bs-slide-to="1"></button>
+                    <button type="button" data-bs-target="#productsCarousel" data-bs-slide-to="2"></button>
+                </div>
+                <div class="carousel-inner">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-carrot"></i>
+                                    </div>
+                                    <h5 class="mt-3">Organic Vegetables</h5>
+                                    <p class="text-muted">Fresh, pesticide-free vegetables grown with traditional methods.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Vegetables')">View List</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-apple-alt"></i>
+                                    </div>
+                                    <h5 class="mt-3">Organic Fruits</h5>
+                                    <p class="text-muted">Delicious, natural fruits picked at perfect ripeness.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Fruits')">View List</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-mortar-pestle"></i>
+                                    </div>
+                                    <h5 class="mt-3">Organic Spices</h5>
+                                    <p class="text-muted">Pure, unblended spices from our certified organic farms.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Spices')">View List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-leaf"></i>
+                                    </div>
+                                    <h5 class="mt-3">Organic Fresh Herbs</h5>
+                                    <p class="text-muted">Aromatic and flavorful herbs perfect for cooking and wellness.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Herbs')">View List</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-rose"></i>
+                                    </div>
+                                    <h5 class="mt-3">Edible Flowers</h5>
+                                    <p class="text-muted">Beautiful and delicious flowers for culinary decoration and garnish.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Edible Flowers')">View List</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-clover"></i>
+                                    </div>
+                                    <h5 class="mt-3">From the Wild</h5>
+                                    <p class="text-muted">Sustainably foraged wild produce and ingredients from nature.</p>
+                                    <p class="price"></p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('From the Wild')">View List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-egg"></i>
+                                    </div>
+                                    <h5 class="mt-3">Eggs & Meat</h5>
+                                    <p class="text-muted">High-quality, free-range eggs and naturally raised meat products.</p>
+                                    <p class="price">From ₱0.00.</p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Eggs & Meat')">View List</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="product-card">
+                                    <div class="product-image">
+                                        <i class="fas fa-wine-glass-alt"></i>
+                                    </div>
+                                    <h5 class="mt-3">Slow Fresh Drinks</h5>
+                                    <p class="text-muted">Refreshing beverages made from fresh organic ingredients without preservatives.</p>
+                                    <p class="price">From ₱0.00.</p>
+                                    <button class="btn btn-success w-100" onclick="showProductList('Slow Fresh Drinks')">View List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Why Choose Oikos Orchard & Farm</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="why-card">
+                        <h5><i class="fas fa-globe text-success me-2"></i>Eco-Friendly</h5>
+                        <p>We practice sustainable farming methods that protect our environment for future generations.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="why-card">
+                        <h5><i class="fas fa-star text-success me-2"></i>Quality Assured</h5>
+                        <p>Every product goes through rigorous quality checks to ensure premium standards.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="why-card">
+                        <h5><i class="fas fa-user-tie text-success me-2"></i>Expert Team</h5>
+                        <p>Our experienced agronomists provide personalized guidance for your farming success.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="why-card">
+                        <h5><i class="fas fa-truck text-success me-2"></i>Fast Delivery</h5>
+                        <p>Quick and reliable delivery of fresh products directly to your door.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-5 stats-section">
+        <div class="container">
+            <div class="row text-center text-white">
+                <div class="col-md-3 mb-4">
+                    <h3 class="display-5 fw-bold counter" data-target="5000">0</h3>
+                    <p>Happy Farmers</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h3 class="display-5 fw-bold counter" data-target="50000">0</h3>
+                    <p>Acres Cultivated</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h3 class="display-5 fw-bold counter" data-target="20">0</h3>
+                    <p>Years Experience</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h3 class="display-5 fw-bold counter" data-target="150">0</h3>
+                    <p>Products Available</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h2 class="section-title text-center mb-0" style="flex: 1;">What Our Customers Say</h2>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#reviewModal">Add Rating</button>
+            </div>
+            <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#testimonialsCarousel" data-bs-slide-to="0" class="active"></button>
+                    <button type="button" data-bs-target="#testimonialsCarousel" data-bs-slide-to="1"></button>
+                </div>
+                <div class="carousel-inner">
+                    <!-- Slide 1 -->
+                    <div class="carousel-item active">
+                        <div class="row g-4" id="testimonials-container">
+                            <div class="col-md-4 testimonial-item">
+                                <div class="testimonial-card">
+                                    <div class="stars mb-2">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <p class="rating-number">5.0</p>
+                                    <p class="mb-3">"Oikos Orchard & Farm has completely transformed my farming business. The quality of their products and support is unmatched!"</p>
+                                    <h6 class="text-success">- John Smith</h6>
+                                    <small class="text-muted">Farmer, California</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 testimonial-item">
+                                <div class="testimonial-card">
+                                    <div class="stars mb-2">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <p class="rating-number">5.0</p>
+                                    <p class="mb-3">"Best decision I made was switching to Oikos Orchard & Farm. My yields increased by 40% in the first season!"</p>
+                                    <h6 class="text-success">- Maria Garcia</h6>
+                                    <small class="text-muted">Farmer, Texas</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 testimonial-item">
+                                <div class="testimonial-card">
+                                    <div class="stars mb-2">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <p class="rating-number">5.0</p>
+                                    <p class="mb-3">"Exceptional customer service and premium quality products. Highly recommended for all farmers!"</p>
+                                    <h6 class="text-success">- Robert Johnson</h6>
+                                    <small class="text-muted">Farmer, Florida</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="carousel-item">
+                        <div class="row g-4">
+                            <div class="col-md-6 mx-auto">
+                                <div class="testimonial-card">
+                                    <div class="stars mb-2">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <p class="rating-number">5.0</p>
+                                    <p class="mb-3">"The team at Oikos Orchard & Farm is incredibly knowledgeable and always ready to help. Their products are the best quality I've found!"</p>
+                                    <h6 class="text-success">- Sarah Williams</h6>
+                                    <small class="text-muted">Farmer, New York</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+            <nav aria-label="Testimonials pagination" class="mt-4">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <li class="page-item" id="prev-btn">
+                        <a class="page-link" href="#" onclick="previousPage(event)">Previous</a>
+                    </li>
+                    <li class="page-item next" id="next-btn">
+                        <a class="page-link" href="#" onclick="nextPage(event)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Get In Touch</h2>
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <div class="contact-info">
+                        <h5><i class="fas fa-map-marker-alt text-success me-2"></i>Address</h5>
+                        <p>
+Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 6020</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="contact-info">
+                        <h5><i class="fas fa-phone text-success me-2"></i>Phone</h5>
+                        <p>+63 917 777 0851<br>Mon-Sat: 7:30AM-4:30PM</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4">
+                    <div class="contact-info">
+                        <h5><i class="fas fa-envelope text-success me-2"></i>Email</h5>
+                        <p>Oikosorchardandfarm@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-8 mx-auto">
+                    <form class="contact-form" id="contactForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Your Email" required>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" placeholder="Subject" required>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success btn-lg w-100">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3"><img src="OikosOF.png" alt="Oikos Logo" class="footer-logo me-2">Oikos Orchard & Farm</h5>
+                    <p>Your trusted partner in sustainable and organic farming solutions.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#home" class="text-decoration-none text-light">Home</a></li>
+                        <li><a href="#about" class="text-decoration-none text-light">About Us</a></li>
+                        <li><a href="#services" class="text-decoration-none text-light">Services</a></li>
+                        <li><a href="#products" class="text-decoration-none text-light">Products</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#contact" class="text-decoration-none text-light">Contact Us</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">FAQs</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Privacy Policy</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Follow Us</h6>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2026 Oikos Orchard & Farm. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Made with <i class="fas fa-heart text-danger"></i> for sustainable farming</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Get Started with Oikos Orchard & Farm</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="getStartedForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contact Number</label>
+                            <input type="number" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Interested In</label>
+                            <select class="form-select" required>
+                                <option value="">Select...</option>
+                                <option value="seeds">Herbs,Fruits...</option>
+                                <option value="consulting">Glamping</option>
+                                <option value="equipment">Car Glamping</option>
+                                <option value="training">Session</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" onclick="submitGetStarted()">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products List Modal -->
+    <div class="modal fade" id="productsListModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalTitle">Fruits</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="productListTable">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Pack / Volume</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productListBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review/Rating Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Your Review & Rating</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="reviewName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location/Title</label>
+                            <input type="text" class="form-control" id="reviewLocation" placeholder="e.g., Farmer, California" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Your Review</label>
+                            <textarea class="form-control" id="reviewText" rows="4" placeholder="Share your experience..." required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rating</label>
+                            <div class="rating-input">
+                                <i class="fas fa-star star-icon" data-rating="1" title="Poor"></i>
+                                <i class="fas fa-star star-icon" data-rating="2" title="Fair"></i>
+                                <i class="fas fa-star star-icon" data-rating="3" title="Good"></i>
+                                <i class="fas fa-star star-icon" data-rating="4" title="Very Good"></i>
+                                <i class="fas fa-star star-icon" data-rating="5" title="Excellent"></i>
+                            </div>
+                            <input type="hidden" id="ratingValue" value="5">
+                            <p class="mt-2"><span id="ratingText">Excellent</span> (5/5)</p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="submitReview()">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

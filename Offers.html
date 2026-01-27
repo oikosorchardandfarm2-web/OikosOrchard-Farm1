@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers & Bookings - Oikos Orchard & Farm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Offers Page Specific Styles */
+        .offers-header {
+            background: linear-gradient(135deg, #4A3728 0%, #2F251A 100%);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .offers-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .offers-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .package-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(39, 174, 96, 0.2);
+            border-color: var(--primary-green);
+        }
+
+        .package-card.featured {
+            border: 3px solid var(--primary-green);
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.05) 0%, rgba(39, 174, 96, 0.02) 100%);
+        }
+
+        .package-icon {
+            font-size: 3.5rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .package-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            margin: 1.5rem 0;
+        }
+
+        .package-pax {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-book {
+            background: var(--primary-green);
+            color: white;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1.05rem;
+        }
+
+        .btn-book:hover {
+            background: var(--dark-green);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.3);
+        }
+
+        .inclusions-section {
+            background: #f8f9fa;
+            padding: 50px 0;
+            margin: 50px 0;
+        }
+
+        .inclusion-item {
+            padding: 20px;
+            margin-bottom: 15px;
+            background: white;
+            border-left: 4px solid var(--primary-green);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .inclusion-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.1);
+        }
+
+        .inclusion-item h6 {
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .inclusion-item p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .addon-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .addon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(39, 174, 96, 0.2);
+        }
+
+        .addon-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .addon-price {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        .rental-card {
+            background: linear-gradient(135deg, var(--light-green) 0%, rgba(39, 174, 96, 0.1) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px solid var(--primary-green);
+        }
+
+        .rental-icon {
+            font-size: 3rem;
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .rental-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .rental-price {
+            font-size: 2rem;
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        .section-title-offers {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title-offers::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary-green);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+
+        .badge-featured {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--primary-green);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .offers-header h1 {
+                font-size: 2rem;
+            }
+
+            .package-price {
+                font-size: 2rem;
+            }
+
+            .package-card {
+                padding: 25px 20px;
+            }
+
+            .section-title-offers {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <img src="OikosOF.png" alt="Oikos Logo" class="navbar-logo me-2">Oikos Orchard & Farm
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="Offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Offers Header -->
+    <section class="offers-header">
+        <div class="container">
+            <h1>Our Special Offers & Bookings</h1>
+            <p>Experience the Best Glamping & Farm Stay Experience</p>
+        </div>
+    </section>
+
+    <!-- Glamping Packages Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title-offers">Glamping Packages</h2>
+            
+            <div class="row">
+                <!-- Glamping for 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="package-card">
+                        <div class="text-center">
+                            <div class="package-icon">
+                                <i class="fas fa-tent"></i>
+                            </div>
+                            <h3 class="package-title">Glamping for 2</h3>
+                            <p class="package-pax"><i class="fas fa-users me-2"></i>Perfect for Couples</p>
+                            <div class="package-price">₱3,200</div>
+                            <p class="text-muted mb-4">1 Night Stay</p>
+                            <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Glamping for 2', 3200)">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Glamping for 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="package-card">
+                        <div class="text-center">
+                            <div class="package-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <h3 class="package-title">Glamping for 4</h3>
+                            <p class="package-pax"><i class="fas fa-users me-2"></i>Perfect for Small Families</p>
+                            <div class="package-price">₱4,200</div>
+                            <p class="text-muted mb-4">1 Night Stay</p>
+                            <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Glamping for 4', 4200)">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Family Package -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="package-card featured">
+                        <div class="badge-featured">BESTSELLER</div>
+                        <div class="text-center">
+                            <div class="package-icon">
+                                <i class="fas fa-tree"></i>
+                            </div>
+                            <h3 class="package-title">Family Package</h3>
+                            <p class="package-pax"><i class="fas fa-users me-2"></i>Good for 12 Persons</p>
+                            <div class="package-price">₱10,000</div>
+                            <p class="text-muted mb-4">1 Night Stay</p>
+                            <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Family Package (12 Pax)', 10000)">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Inclusions Section -->
+    <section class="inclusions-section">
+        <div class="container">
+            <h2 class="section-title-offers">What's Included</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-4" style="color: var(--primary-green); font-weight: 700;">
+                        <i class="fas fa-check-circle me-2"></i>Accommodation
+                    </h4>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-wind me-2"></i>2 Glamping Tents with Aircon</h6>
+                        <p>Sleeps 8 Adults Total</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-bed me-2"></i>2 Regular Tents</h6>
+                        <p>Sleeps 4 Adults Total</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-shower me-2"></i>2 Bathrooms with Hot Water</h6>
+                        <p>Clean and Well-Maintained</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-toilet me-2"></i>2 Toilets</h6>
+                        <p>Hygienic Facilities</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h4 class="mb-4" style="color: var(--primary-green); font-weight: 700;">
+                        <i class="fas fa-check-circle me-2"></i>Amenities & Facilities
+                    </h4>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-spa me-2"></i>12 Towels</h6>
+                        <p>Soft and Clean</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-utensils me-2"></i>Outdoor Dining Kitchen & Dining Area</h6>
+                        <p>Fully Equipped</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-umbrella me-2"></i>Multipurpose Nipa Gazebo</h6>
+                        <p>With Tables and Chairs</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-fire me-2"></i>Bonfire Area</h6>
+                        <p>Wood Charges Apply</p>
+                    </div>
+                    <div class="inclusion-item">
+                        <h6><i class="fas fa-parking me-2"></i>Free Parking</h6>
+                        <p>Secure Parking Available</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add-ons Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="section-title-offers">Available Add-Ons</h2>
+            
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-bed"></i>
+                        </div>
+                        <p class="addon-title">Extra Mattress</p>
+                        <p class="addon-price">₱400</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Maximum 1 per Glamping</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-campground"></i>
+                        </div>
+                        <p class="addon-title">Pitch Your Own Tent</p>
+                        <p class="addon-price">₱400</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Person (Mattress Provided, No Towels)</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <p class="addon-title">Firewood</p>
+                        <p class="addon-price">₱250</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Bundle</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <p class="addon-title">Charcoal</p>
+                        <p class="addon-price">As Per Availability</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">For BBQ & Cooking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available for Rent Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title-offers">Available For Rent</h2>
+            
+            <div class="row">
+                <div class="col-md-6 offset-md-3">
+                    <div class="rental-card">
+                        <div class="rental-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h3 class="rental-title">Sony Party Karaoke System</h3>
+                        <p class="text-muted mb-3">Make Your Event More Fun & Memorable</p>
+                        <div class="rental-price">₱1,000 / Night</div>
+                        <p class="text-muted mt-3" style="font-size: 0.9rem;">
+                            <i class="fas fa-info-circle me-2"></i>Perfect for parties, celebrations, and group gatherings
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Car Camping Packages Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title-offers">Car Camping Packages</h2>
+                <p class="lead text-muted">Experience safe, organized, and comfortable farm car camping—bring your own gear, park beside your tent, and enjoy curated farm amenities at a lower cost than glamping.</p>
+            </div>
+
+            <div class="row g-4">
+                <!-- Park & Pitch -->
+                <div class="col-lg-6">
+                    <div class="package-card">
+                        <div class="text-center mb-3">
+                            <div class="package-icon">
+                                <i class="fas fa-sun"></i>
+                            </div>
+                            <h3 class="package-title">Park & Pitch</h3>
+                            <p class="text-muted">Day-Use Car Camping</p>
+                        </div>
+                        <div class="text-center mb-3">
+                            <div class="package-price">₱500</div>
+                            <p class="text-muted">Per Vehicle | Up to 4 pax</p>
+                            <p class="text-success" style="font-weight: 600;">⏰ 8:00 AM – 6:00 PM</p>
+                        </div>
+                        <h6 class="mb-3" style="color: var(--primary-green); font-weight: 700;">Inclusions:</h6>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Designated parking & pitch area</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Restroom (CR) access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Lounge / gazebo access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Pre-arranged farm tour</li>
+                        </ul>
+                        <p class="text-muted text-center mb-3">Perfect for day campers, overlanders, and picnic-style stays.</p>
+                        <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Park & Pitch Car Camping', 500)">Book Now</button>
+                    </div>
+                </div>
+
+                <!-- Overnight Basic -->
+                <div class="col-lg-6">
+                    <div class="package-card">
+                        <div class="text-center mb-3">
+                            <div class="package-icon">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                            <h3 class="package-title">Overnight Car Camping</h3>
+                            <p class="text-muted">BASIC Package</p>
+                        </div>
+                        <div class="text-center mb-3">
+                            <div class="package-price">₱1,200</div>
+                            <p class="text-muted">Per Vehicle / Night | Up to 4 pax</p>
+                            <p class="text-success" style="font-weight: 600;">⏰ 2:00 PM – 11:00 AM</p>
+                        </div>
+                        <h6 class="mb-3" style="color: var(--primary-green); font-weight: 700;">Inclusions:</h6>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Designated car slot + 1 tent pitch</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>24/7 security</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Hot & cold showers</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Clean restrooms (CR)</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wi-Fi access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Lounge / gazebo access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Pre-arranged farm tour</li>
+                        </ul>
+                        <p class="text-muted text-center mb-3">Ideal for couples, small families, and first-time car campers.</p>
+                        <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Overnight Car Camping - BASIC', 1200)">Book Now</button>
+                    </div>
+                </div>
+
+                <!-- Overnight Comfort -->
+                <div class="col-lg-6">
+                    <div class="package-card">
+                        <div class="text-center mb-3">
+                            <div class="package-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <h3 class="package-title">Overnight Car Camping</h3>
+                            <p class="text-muted">COMFORT Package</p>
+                        </div>
+                        <div class="text-center mb-3">
+                            <div class="package-price">₱1,800</div>
+                            <p class="text-muted">Per Vehicle / Night | Up to 5 pax</p>
+                        </div>
+                        <h6 class="mb-3" style="color: var(--primary-green); font-weight: 700;">Inclusions:</h6>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Everything in BASIC, plus:</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Reserved premium camping spot</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>1 table set or picnic table use</li>
+                        </ul>
+                        <p class="text-muted text-center mb-3">Best for groups who want extra space and convenience.</p>
+                        <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Overnight Car Camping - COMFORT', 1800)">Book Now</button>
+                    </div>
+                </div>
+
+                <!-- Barkada Bundle -->
+                <div class="col-lg-6">
+                    <div class="package-card featured">
+                        <div class="badge-featured">BEST SELLER</div>
+                        <div class="text-center mb-3">
+                            <div class="package-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3 class="package-title">Barkada Car Camping</h3>
+                            <p class="text-muted">Bundle Package</p>
+                        </div>
+                        <div class="text-center mb-3">
+                            <div class="package-price">₱4,800</div>
+                            <p class="text-muted">Per Night | 3 Vehicles, Up to 12 pax</p>
+                        </div>
+                        <h6 class="mb-3" style="color: var(--primary-green); font-weight: 700;">Inclusions:</h6>
+                        <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>3 designated car camping slots</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Hot & cold showers</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Clean restrooms (CR)</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Wi-Fi access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>24/7 security</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Lounge / gazebo access</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Pre-arranged farm tour</li>
+                        </ul>
+                        <p class="text-muted text-center mb-3">Perfect for friends, clubs, and group trips.</p>
+                        <button class="btn-book" data-bs-toggle="modal" data-bs-target="#bookingModal" onclick="setPackage('Barkada Car Camping Bundle', 4800)">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Car Camping Add-ons Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title-offers">Car Camping Add-Ons & Services</h2>
+            
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <p class="addon-title">Extra Pax</p>
+                        <p class="addon-price">₱400</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Head</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-campground"></i>
+                        </div>
+                        <p class="addon-title">Extra Tent Pitch</p>
+                        <p class="addon-price">₱300</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Tent</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <p class="addon-title">Electric Hook-up</p>
+                        <p class="addon-price">₱300</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Night (Limited)</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <p class="addon-title">Generator Use</p>
+                        <p class="addon-price">₱500</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Night (By Approval)</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <p class="addon-title">Gasul Use</p>
+                        <p class="addon-price">₱500</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Overnight</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <p class="addon-title">Bonfire Wood</p>
+                        <p class="addon-price">₱250</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Bundle</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <p class="addon-title">Karaoke System</p>
+                        <p class="addon-price">₱1,000</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Night</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="addon-card">
+                        <div style="font-size: 2.5rem; color: var(--primary-green); margin-bottom: 1rem;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <p class="addon-title">Food Order Service</p>
+                        <p class="addon-price">₱500</p>
+                        <p class="text-muted" style="font-size: 0.9rem;">Per Menu (Advance)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-5" role="alert">
+                <h5 class="alert-heading"><i class="fas fa-utensils me-2"></i>Food & Meals</h5>
+                <p class="mb-0">Meals are not included in car camping packages. However, Oikos Orchard & Farm can facilitate advance food orders at an additional <strong>₱500 per menu</strong> to ensure a memorable dining experience.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-5" style="background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%); color: white;">
+        <div class="container text-center">
+            <h2 class="mb-4" style="font-size: 2.5rem;">Ready to Book Your Experience?</h2>
+            <p class="mb-4" style="font-size: 1.1rem;">Contact us now to reserve your glamping adventure at Oikos Orchard & Farm</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <button class="btn btn-light btn-lg" style="color: var(--primary-green); font-weight: 600;" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
+                <a href="index.html#contact" class="btn btn-outline-light btn-lg" style="font-weight: 600;">Contact Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Your Glamping Experience</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Selected Package</label>
+                            <input type="text" class="form-control" id="packageName" readonly style="background-color: #f0f0f0;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price</label>
+                            <input type="text" class="form-control" id="packagePrice" readonly style="background-color: #f0f0f0;">
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="bookingFullName" class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" id="bookingFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingEmail" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="bookingEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingPhone" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="bookingPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Check-in Date *</label>
+                            <input type="date" class="form-control" id="bookingDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingGuests" class="form-label">Number of Guests *</label>
+                            <input type="number" class="form-control" id="bookingGuests" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingRequests" class="form-label">Special Requests (Optional)</label>
+                            <textarea class="form-control" id="bookingRequests" rows="3" placeholder="Any special requests or preferences?"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="submitBooking()">Submit Booking Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-md-3 mb-4">
+                    <h5 class="mb-3"><img src="OikosOF.png" alt="Oikos Logo" class="footer-logo me-2">Oikos Orchard & Farm</h5>
+                    <p>Your trusted partner in sustainable and organic farming solutions.</p>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html#home" class="text-decoration-none text-light">Home</a></li>
+                        <li><a href="index.html#about" class="text-decoration-none text-light">About Us</a></li>
+                        <li><a href="index.html#services" class="text-decoration-none text-light">Services</a></li>
+                        <li><a href="Offers.html" class="text-decoration-none text-light">Offers</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Support</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="index.html#contact" class="text-decoration-none text-light">Contact Us</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">FAQs</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Privacy Policy</a></li>
+                        <li><a href="#" class="text-decoration-none text-light">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <h6 class="mb-3">Follow Us</h6>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="bg-light">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2026 Oikos Orchard & Farm. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Made with <i class="fas fa-heart text-danger"></i> for sustainable farming</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function setPackage(packageName, price) {
+            document.getElementById('packageName').value = packageName;
+            document.getElementById('packagePrice').value = '₱' + price.toLocaleString();
+        }
+
+        function submitBooking() {
+            const packageName = document.getElementById('packageName').value;
+            const packagePrice = document.getElementById('packagePrice').value;
+            
+            if (!packageName) {
+                alert('Please select a package');
+                return;
+            }
+
+            const form = document.getElementById('bookingForm');
+            
+            // Get form inputs directly by ID
+            const fullName = document.getElementById('bookingFullName').value.trim();
+            const email = document.getElementById('bookingEmail').value.trim();
+            const phone = document.getElementById('bookingPhone').value.trim();
+            const checkinDate = document.getElementById('bookingDate').value;
+            const guests = document.getElementById('bookingGuests').value;
+            const specialRequests = document.getElementById('bookingRequests').value.trim();
+
+            // Validate all required fields
+            if (!fullName || !email || !phone || !checkinDate || !guests) {
+                alert('Please fill all required fields');
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Show loading state
+            const submitBtn = event.target;
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+
+            // Prepare booking data
+            const bookingData = {
+                packageName: packageName,
+                packagePrice: packagePrice,
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                checkinDate: checkinDate,
+                guests: guests,
+                specialRequests: specialRequests
+            };
+
+            // Send to server
+            fetch('send-booking.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => {
+                // Check if response is okay
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                // Get text first to debug
+                return response.text().then(text => {
+                    try {
+                        return JSON.parse(text);
+                    } catch (e) {
+                        console.error('Response text:', text);
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    showAlert('✅ Booking request submitted successfully! Check your email for confirmation. We will contact you within 24 hours.', 'success');
+                    
+                    // Reset form
+                    form.reset();
+                    document.getElementById('packageName').value = '';
+                    document.getElementById('packagePrice').value = '';
+                    
+                    // Close modal after short delay
+                    setTimeout(() => {
+                        try {
+                            const modalElement = document.getElementById('bookingModal');
+                            if (modalElement && window.bootstrap) {
+                                const modal = bootstrap.Modal.getInstance(modalElement);
+                                if (modal) {
+                                    modal.hide();
+                                }
+                            }
+                        } catch (e) {
+                            console.log('Modal close handled gracefully');
+                        }
+                    }, 500);
+                } else {
+                    showAlert('❌ Error: ' + (data.message || 'Failed to submit booking'), 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('❌ Error submitting booking. Please try again later.', 'danger');
+            })
+            .finally(() => {
+                // Restore button
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+
+        function showAlert(message, type = 'info') {
+            // Create alert element
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.setAttribute('role', 'alert');
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+
+            // Add to page
+            const container = document.querySelector('body');
+            container.insertBefore(alertDiv, container.firstChild);
+
+            // Position it at top
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '80px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.maxWidth = '500px';
+
+            // Auto dismiss after 8 seconds
+            setTimeout(() => {
+                try {
+                    if (window.bootstrap && bootstrap.Alert) {
+                        const bsAlert = new bootstrap.Alert(alertDiv);
+                        bsAlert.close();
+                    } else {
+                        alertDiv.remove();
+                    }
+                } catch (e) {
+                    alertDiv.remove();
+                }
+            }, 8000);
+        }
+    </script>
+</body>
+</html>
