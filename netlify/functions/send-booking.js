@@ -1,5 +1,3 @@
-const https = require('https');
-
 // Google Apps Script webhook URL
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyfgMWh3i6EvBrf6yyNkrHsX7LFUYXTvzZ3C95oEI7DVcDOmWLXOUdj1j4PMbag_-fI7w/exec';
 
@@ -8,6 +6,7 @@ exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ success: false, message: 'Method not allowed' })
     };
   }
@@ -15,11 +14,13 @@ exports.handler = async (event, context) => {
   try {
     // Parse incoming data
     const data = JSON.parse(event.body);
+    console.log('Received booking data:', data);
 
     // Validate required fields
     if (!data.fullName || !data.email || !data.phone || !data.checkinDate || !data.guests || !data.packageName) {
       return {
         statusCode: 400,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: false, message: 'Please fill all required fields' })
       };
     }
@@ -29,6 +30,7 @@ exports.handler = async (event, context) => {
     if (!emailRegex.test(data.email)) {
       return {
         statusCode: 400,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ success: false, message: 'Invalid email address' })
       };
     }
@@ -47,14 +49,30 @@ exports.handler = async (event, context) => {
       bookingId: 'booking_' + Date.now()
     };
 
-    // Send to Google Apps Script
-    await sendToGoogleSheets(bookingData);
+    console.log('Sending to Google Sheets:', bookingData);
 
-    // Send confirmation email (optional - can be implemented with SendGrid, Mailgun, etc.)
-    // await sendConfirmationEmail(bookingData);
+    // Send to Google Apps Script
+    const sheetResponse = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bookingData)
+    });
+
+    console.log('Google Sheets response status:', sheetResponse.status);
+    const sheetResponseText = await sheetResponse.text();
+    console.log('Google Sheets response:', sheetResponseText);
+
+    if (sheetResponse.status >= 200 && sheetResponse.status < 300) {
+      console.log('Successfully sent to Google Sheets:', bookingData.bookingId);
+    } else {
+      console.warn('Google Sheets returned non-2xx status:', sheetResponse.status);
+    }
 
     return {
       statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         success: true,
         message: 'Booking submitted successfully! A confirmation email has been sent to ' + data.email + '. Our team will contact you within 24 hours at ' + data.phone + '.',
@@ -66,48 +84,12 @@ exports.handler = async (event, context) => {
     console.error('Error processing booking:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ success: false, message: 'Server error: ' + error.message })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        success: false, 
+        message: 'Server error: ' + error.message,
+        error: error.toString()
+      })
     };
   }
 };
-
-// Function to send data to Google Sheets via Apps Script
-function sendToGoogleSheets(bookingData) {
-  return new Promise((resolve, reject) => {
-    const payload = JSON.stringify(bookingData);
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': payload.length
-      }
-    };
-
-    const req = https.request(WEBHOOK_URL, options, (res) => {
-      let responseBody = '';
-
-      res.on('data', (chunk) => {
-        responseBody += chunk;
-      });
-
-      res.on('end', () => {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          console.log('Successfully sent to Google Sheets:', bookingData.bookingId);
-          resolve(responseBody);
-        } else {
-          console.error('Failed to send to Google Sheets. Status:', res.statusCode);
-          reject(new Error('Failed to send to Google Sheets: HTTP ' + res.statusCode));
-        }
-      });
-    });
-
-    req.on('error', (error) => {
-      console.error('Error sending to Google Sheets:', error);
-      reject(error);
-    });
-
-    req.write(payload);
-    req.end();
-  });
-}
