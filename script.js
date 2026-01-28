@@ -476,28 +476,66 @@ function submitGetStarted() {
         return;
     }
 
-    // Get form data
-    const name = form.querySelector('input[type="text"]').value;
-    const email = emailInput.value;
-    const farmSize = form.querySelector('input[type="number"]').value;
-    const interested = form.querySelector('select').value;
+    // Get form data using form elements with names
+    const name = form.querySelector('input[name="name"]').value;
+    const email = form.querySelector('input[name="email"]').value;
+    const phone = form.querySelector('input[name="phone"]').value;
+    const interested = form.querySelector('select[name="interested"]').value;
 
     const data = {
-        name,
-        email,
-        farmSize,
-        interested
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        interested: interested.trim()
     };
 
-    console.log('Get Started Data:', data);
+    // Show loading state
+    const submitButton = form.closest('.modal-content').querySelector('button[onclick="submitGetStarted()"]');
+    const originalText = submitButton ? submitButton.textContent : 'Get Started';
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+    }
 
-    // Show success message
-    showAlert('Thank you! We will contact you soon with more information.', 'success');
-
-    // Reset form and close modal
-    form.reset();
-    const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
-    modal.hide();
+    // Send to server
+    fetch('./send-getstarted.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(responseData => {
+        if (responseData.success) {
+            showAlert(responseData.message, 'success');
+            form.reset();
+            // Reset validation classes
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+            if (modal) modal.hide();
+        } else {
+            showAlert('Error: ' + (responseData.message || 'Failed to submit request'), 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Get Started submission error:', error);
+        showAlert('Error submitting request: ' + error.message, 'danger');
+    })
+    .finally(() => {
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+        }
+    });
 }
 
 // ================================
