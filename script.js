@@ -936,14 +936,19 @@ function submitBooking(event) {
     }
 
     // Send to server
-    fetch('/send-booking.php', {
+    fetch('./send-booking.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(bookingData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             alert('Booking submitted successfully!\n\n' + data.message);
