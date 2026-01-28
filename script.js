@@ -859,11 +859,31 @@ function showBookingForm(buttonElement) {
 
 function populateBookingForm(packageName, packagePrice) {
     // Update booking form with selected package
-    const packageInput = document.getElementById('bookingPackageName');
-    const packagePriceInput = document.getElementById('bookingPackagePrice');
+    const packageInput = document.getElementById('packageName');
+    const packagePriceInput = document.getElementById('packagePrice');
     
     if (packageInput) packageInput.value = packageName;
     if (packagePriceInput) packagePriceInput.value = packagePrice;
+}
+
+function updatePackageFromSelect() {
+    // Get the selected value from the dropdown
+    const packageSelect = document.getElementById('packageSelect');
+    if (!packageSelect || !packageSelect.value) {
+        document.getElementById('packageName').value = '';
+        document.getElementById('packagePrice').value = '';
+        return;
+    }
+    
+    // Parse package name and price from the selected value
+    const [packageName, packagePrice] = packageSelect.value.split('|');
+    
+    // Format price with comma separator
+    const formattedPrice = '₱' + parseInt(packagePrice).toLocaleString('en-US');
+    
+    // Update the form fields
+    document.getElementById('packageName').value = packageName;
+    document.getElementById('packagePrice').value = formattedPrice;
 }
 
 function submitBooking(event) {

@@ -708,6 +708,19 @@
                 <div class="modal-body">
                     <form id="bookingForm">
                         <div class="mb-3">
+                            <label class="form-label fw-bold">Select Package *</label>
+                            <select class="form-control" id="packageSelect" required onchange="updatePackageFromSelect()">
+                                <option value="">-- Choose a Package --</option>
+                                <option value="Glamping for 2|3200">Glamping for 2 - ₱3,200</option>
+                                <option value="Glamping for 4|4200">Glamping for 4 - ₱4,200</option>
+                                <option value="Family Package (12 Pax)|10000">Family Package (12 Pax) - ₱10,000</option>
+                                <option value="Park & Pitch Car Camping|500">Park & Pitch Car Camping - ₱500</option>
+                                <option value="Overnight Car Camping - BASIC|1200">Overnight Car Camping - BASIC - ₱1,200</option>
+                                <option value="Overnight Car Camping - COMFORT|1800">Overnight Car Camping - COMFORT - ₱1,800</option>
+                                <option value="Barkada Car Camping Bundle|4800">Barkada Car Camping Bundle - ₱4,800</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label fw-bold">Selected Package</label>
                             <input type="text" class="form-control" id="packageName" readonly style="background-color: #f0f0f0;">
                         </div>
