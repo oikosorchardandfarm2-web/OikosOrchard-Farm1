@@ -8,6 +8,8 @@ let allTestimonials = [];
 
 function initPagination() {
     allTestimonials = Array.from(document.querySelectorAll('.testimonial-item'));
+    if (allTestimonials.length === 0) return; // Exit if no testimonials exist
+    
     const totalPages = Math.ceil(allTestimonials.length / itemsPerPage);
     updatePagination();
     updatePageButtons(totalPages);
@@ -67,6 +69,8 @@ function updatePagination() {
 
 function updatePageButtons(totalPages) {
     const pagination = document.getElementById('pagination');
+    if (!pagination) return; // Exit if pagination doesn't exist
+    
     const prevBtn = pagination.querySelector('#prev-btn');
     const nextBtn = pagination.querySelector('#next-btn');
     
