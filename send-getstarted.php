@@ -1,9 +1,17 @@
 <?php
+// Start output buffering to prevent accidental output before JSON
+ob_start();
+
+// Set strict error reporting but don't display to user
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
 header('Content-Type: application/json; charset=utf-8');
 
 try {
     // Check if request is POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        ob_end_clean();
         http_response_code(405);
         echo json_encode(['success' => false, 'message' => 'Method not allowed']);
         exit;
@@ -13,6 +21,7 @@ try {
     $input = json_decode(file_get_contents('php://input'), true);
     
     if (!$input) {
+        ob_end_clean();
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Invalid JSON data received']);
         exit;
@@ -20,6 +29,7 @@ try {
 
     // Validate required fields
     if (empty($input['name']) || empty($input['email']) || empty($input['phone']) || empty($input['interested'])) {
+        ob_end_clean();
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
         exit;
@@ -33,6 +43,7 @@ try {
 
     // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        ob_end_clean();
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Invalid email address']);
         exit;
@@ -168,14 +179,14 @@ try {
     // Respond based on email results
     if ($adminEmailSent || $userEmailSent) {
         http_response_code(200);
-        echo json_encode([
+        $response = json_encode([
             'success' => true,
             'message' => 'Thank you! We have received your request and will contact you shortly. Check your email for confirmation.'
         ]);
     } else {
         // Even if email fails, we logged it
         http_response_code(200);
-        echo json_encode([
+        $response = json_encode([
             'success' => true,
             'message' => 'Your request has been received! We will contact you soon.'
         ]);
@@ -183,9 +194,13 @@ try {
 
 } catch (Exception $e) {
     http_response_code(500);
-    echo json_encode([
+    $response = json_encode([
         'success' => false,
         'message' => 'Server error. Please try again later.'
     ]);
 }
+
+// Clean output buffer and send response
+ob_end_clean();
+echo $response;
 ?>
