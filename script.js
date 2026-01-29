@@ -499,7 +499,7 @@ function submitGetStarted() {
 
     // Send to server with cache busting
     const timestamp = new Date().getTime();
-    fetch(`./send-getstarted.php?t=${timestamp}`, {
+    fetch(`./send-getstarted.php`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
