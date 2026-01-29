@@ -1063,11 +1063,14 @@ function submitBooking(event) {
     })
     .then(data => {
         if (data.success) {
-            alert('Booking submitted successfully!\n\n' + data.message);
+            // Show success modal with animation
+            showSuccessModal('Thank you for booking!', data.message);
             form.reset();
             // Close modal if exists
             const modal = bootstrap.Modal.getInstance(form.closest('.modal'));
-            if (modal) modal.hide();
+            if (modal) {
+                setTimeout(() => modal.hide(), 2500);
+            }
         } else {
             alert('Error: ' + (data.message || 'Failed to submit booking'));
         }
