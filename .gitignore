@@ -3,6 +3,7 @@
 # Sensitive configuration files (credentials)
 twilio-config.php
 gmail-config.php
+firebase-config.json
 .env
 .env.local
 

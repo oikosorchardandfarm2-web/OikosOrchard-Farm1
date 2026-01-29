@@ -55,26 +55,46 @@ try {
     // Admin email address
     $adminEmail = 'oikosorchardandfarm2@gmail.com';
 
-    // Send SMS notification to admin using Messaging Service
-    $phoneWithCountryCode = '+63' . ltrim($phone, '0'); // Convert 09xxxxxxxxx to +639xxxxxxxxx
-    
-    // Send SMS to admin
-    $adminSmsResult = sendGetStartedSMS($name, $email, $phone, $interested);
-    error_log("Admin SMS Result: " . json_encode($adminSmsResult));
-    
-    // Send SMS to customer
-    $customerSmsResult = sendCustomerConfirmationSMS($name, $phoneWithCountryCode, 'inquiry');
-    error_log("Customer SMS Result: " . json_encode($customerSmsResult));
-
     // Log the request for records
     $logEntry = date('Y-m-d H:i:s') . " | Name: {$name} | Email: {$email} | Phone: {$phone} | Interested: {$interested}\n";
     file_put_contents(__DIR__ . '/getstarted-log.txt', $logEntry, FILE_APPEND);
+
+    // Send Firebase notification to topic (admin can subscribe to topic in mobile app)
+    $firebase = new FirebaseNotification();
+    $notificationResult = $firebase->sendTopicNotification(
+        'oikos_get_started', // Topic name
+        'New Get Started Inquiry',
+        "$name is interested in: $interested",
+        [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'interested' => $interested,
+            'type' => 'inquiry'
+        ]
+    );
+    
+    error_log("Firebase notification result: " . json_encode($notificationResult));
+
+    // Also send email as backup
+    $emailSubject = "New Get Started Inquiry - Oikos Orchard & Farm";
+    $emailBody = "New inquiry received:\n\n";
+    $emailBody .= "Name: $name\n";
+    $emailBody .= "Email: $email\n";
+    $emailBody .= "Phone: $phone\n";
+    $emailBody .= "Interested In: $interested\n";
+    $emailBody .= "\nPlease follow up within 24 hours.";
+    
+    $emailHeaders = "From: " . $adminEmail . "\r\n";
+    $emailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
+    
+    mail($adminEmail, $emailSubject, $emailBody, $emailHeaders);
 
     // Respond with success
     http_response_code(200);
     $response = json_encode([
         'success' => true,
-        'message' => 'Thank you! We have received your request. You will receive an SMS notification shortly, and our team will contact you within 24 hours.'
+        'message' => 'Thank you! We have received your request. Our team will contact you within 24 hours.'
     ]);
 
 } catch (Exception $e) {
