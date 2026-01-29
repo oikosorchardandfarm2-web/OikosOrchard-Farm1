@@ -1087,3 +1087,185 @@ function submitBooking(event) {
     });
 }
 
+// ================================
+// SUCCESS MODAL WITH ANIMATION
+// ================================
+
+function showSuccessModal(title, message) {
+    // Create modal HTML if it doesn't exist
+    let modalContainer = document.getElementById('success-modal-container');
+    if (!modalContainer) {
+        modalContainer = document.createElement('div');
+        modalContainer.id = 'success-modal-container';
+        document.body.appendChild(modalContainer);
+        
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            #success-modal-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+                animation: fadeIn 0.3s ease-in-out;
+            }
+            
+            #success-modal-container.show {
+                display: flex;
+            }
+            
+            .success-modal-content {
+                background: white;
+                border-radius: 15px;
+                padding: 40px;
+                text-align: center;
+                max-width: 400px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                animation: slideUp 0.4s ease-out;
+            }
+            
+            .success-checkmark {
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 20px;
+            }
+            
+            .checkmark-circle {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+                animation: scaleIn 0.5s ease-out 0.2s both;
+            }
+            
+            .checkmark-circle svg {
+                width: 50px;
+                height: 50px;
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            }
+            
+            .checkmark-path {
+                stroke-dasharray: 48;
+                stroke-dashoffset: 48;
+                animation: checkmark 0.6s ease-out 0.7s forwards;
+            }
+            
+            .success-title {
+                font-size: 24px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 10px;
+                animation: fadeInUp 0.5s ease-out 0.3s both;
+            }
+            
+            .success-message {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 0;
+                animation: fadeInUp 0.5s ease-out 0.5s both;
+            }
+            
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideUp {
+                from {
+                    transform: translateY(30px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes scaleIn {
+                from {
+                    transform: scale(0);
+                }
+                to {
+                    transform: scale(1);
+                }
+            }
+            
+            @keyframes checkmark {
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    transform: translateY(10px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Build the modal HTML
+    modalContainer.innerHTML = `
+        <div class="success-modal-content">
+            <div class="success-checkmark">
+                <div class="checkmark-circle">
+                    <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                        <polyline 
+                            class="checkmark-path" 
+                            points="13 24 19 30 39 14" 
+                            fill="none" 
+                            stroke="white" 
+                            stroke-width="3" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                </div>
+            </div>
+            <h3 class="success-title">${title}</h3>
+            ${message ? `<p class="success-message">${message}</p>` : ''}
+        </div>
+    `;
+    
+    // Show the modal
+    modalContainer.classList.add('show');
+    
+    // Auto-hide after 2.5 seconds with fade out
+    setTimeout(() => {
+        modalContainer.style.animation = 'fadeOut 0.3s ease-out forwards';
+        setTimeout(() => {
+            modalContainer.classList.remove('show');
+            modalContainer.style.animation = '';
+        }, 300);
+    }, 2500);
+}
+
