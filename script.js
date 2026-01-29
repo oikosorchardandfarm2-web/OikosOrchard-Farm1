@@ -499,7 +499,7 @@ function submitGetStarted() {
 
     // Send to server with cache busting
     const timestamp = new Date().getTime();
-    fetch(`./send-getstarted.php?t=${timestamp}`, {
+    fetch(`/.netlify/functions/send-getstarted?t=${timestamp}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
