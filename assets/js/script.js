@@ -498,7 +498,7 @@ function submitGetStarted() {
     }
 
     // Send to server
-    fetch(`/OikosOrchardandFarm/send-getstarted.php`, {
+    fetch(`/OikosOrchardandFarm/api/send-getstarted.php`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -610,35 +610,6 @@ document.addEventListener('DOMContentLoaded', observeElements);
 // ================================
 // BUTTON RIPPLE EFFECT
 // ================================
-
-function addRippleEffect() {
-    const buttons = document.querySelectorAll('.btn');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', function (e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = x + 'px';
-            ripple.style.top = y + 'px';
-            ripple.classList.add('ripple');
-
-            // Remove any existing ripples
-            const existingRipple = this.querySelector('.ripple');
-            if (existingRipple) {
-                existingRipple.remove();
-            }
-
-            this.appendChild(ripple);
-        });
-    });
-}
-
-document.addEventListener('DOMContentLoaded', addRippleEffect);
 
 // ================================
 // MOBILE MENU CLOSE ON LINK CLICK

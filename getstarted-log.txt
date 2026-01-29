@@ -1,9 +1,0 @@
-2026-01-29 01:09:46 | Name: Test User | Email: test@example.com | Phone: 1234567890 | Interested: Glamping
-2026-01-29 07:10:43 | Name: Daisy Limpangog | Email: info@chpcebu.com | Phone: 092005654842 | Interested: Herbs &amp; Fruits
-2026-01-29 07:12:06 | Name: Center for Healthcare Professions Cebu, Inc. | Email: info@chpcebu.com | Phone: 09948962820 | Interested: Glamping
-2026-01-29 08:40:36 | Name: Test | Email: test@test.com | Phone: 09123456789 | Interested: Glamping
-2026-01-29 08:43:29 | Name: Center for Healthcare Professions Cebu, Inc. | Email: teacher@chpcebu.com | Phone: 09948962820 | Interested: Glamping
-2026-01-29 08:58:54 | Name: Test User | Email: test@test.com | Phone: 09123456789 | Interested: Glamping
-2026-01-29 08:59:56 | Name: Daisy | Email: info@chpcebu.com | Phone: 09948962820 | Interested: Glamping
-2026-01-29 09:04:41 | Name: dwadaw | Email: info@chpcebu.com | Phone: 09948962820 | Interested: Seedlings
-2026-01-29 09:09:42 | Name: Daisy Limpangog | Email: info@chpcebu.com | Phone: 09948962820 | Interested: Car Glamping
