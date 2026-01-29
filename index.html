@@ -637,6 +637,72 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
         </div>
     </div>
 
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Book Your Glamping Experience</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Select Package *</label>
+                            <select class="form-control" id="packageSelect" required onchange="updatePackageFromSelect()">
+                                <option value="">-- Choose a Package --</option>
+                                <option value="Glamping for 2|3200">Glamping for 2 - ₱3,200</option>
+                                <option value="Glamping for 4|4200">Glamping for 4 - ₱4,200</option>
+                                <option value="Family Package (12 Pax)|10000">Family Package (12 Pax) - ₱10,000</option>
+                                <option value="Park & Pitch Car Camping|500">Park & Pitch Car Camping - ₱500</option>
+                                <option value="Overnight Car Camping - BASIC|1200">Overnight Car Camping - BASIC - ₱1,200</option>
+                                <option value="Overnight Car Camping - COMFORT|1800">Overnight Car Camping - COMFORT - ₱1,800</option>
+                                <option value="Barkada Car Camping Bundle|4800">Barkada Car Camping Bundle - ₱4,800</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Selected Package</label>
+                            <input type="text" class="form-control" id="packageName" name="packageName" readonly style="background-color: #f0f0f0;">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price</label>
+                            <input type="text" class="form-control" id="packagePrice" name="packagePrice" readonly style="background-color: #f0f0f0;">
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="bookingFullName" class="form-label">Full Name *</label>
+                            <input type="text" class="form-control" id="bookingFullName" name="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingEmail" class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="bookingEmail" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingPhone" class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="bookingPhone" name="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingDate" class="form-label">Check-in Date *</label>
+                            <input type="date" class="form-control" id="bookingDate" name="checkinDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingGuests" class="form-label">Number of Guests *</label>
+                            <input type="number" class="form-control" id="bookingGuests" name="guests" min="1" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookingRequests" class="form-label">Special Requests (Optional)</label>
+                            <textarea class="form-control" id="bookingRequests" name="specialRequests" rows="3" placeholder="Any special requests or preferences?"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" onclick="submitBooking()">Submit Booking Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>

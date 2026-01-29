@@ -1001,46 +1001,63 @@ function updatePackageFromSelect() {
     document.getElementById('packagePrice').value = formattedPrice;
 }
 
+// Function to set package directly (used by onclick handlers)
+function setPackage(packageName, price) {
+    document.getElementById('packageName').value = packageName;
+    document.getElementById('packagePrice').value = '₱' + price.toLocaleString('en-US');
+}
+
 function submitBooking(event) {
     if (event) event.preventDefault();
 
     // Get form data
-    const form = event ? event.target : document.getElementById('bookingForm');
+    const form = document.getElementById('bookingForm');
     if (!form) {
         console.error('Booking form not found');
+        alert('Booking form not found on this page');
         return;
     }
 
-    const fullName = form.querySelector('input[name="fullName"]')?.value || '';
-    const email = form.querySelector('input[name="email"]')?.value || '';
-    const phone = form.querySelector('input[name="phone"]')?.value || '';
-    const checkinDate = form.querySelector('input[name="checkinDate"]')?.value || '';
-    const guests = form.querySelector('input[name="guests"]')?.value || '';
-    const packageName = form.querySelector('input[name="packageName"]')?.value || '';
-    const packagePrice = form.querySelector('input[name="packagePrice"]')?.value || '';
-    const specialRequests = form.querySelector('textarea[name="specialRequests"]')?.value || '';
+    const fullName = document.getElementById('bookingFullName')?.value?.trim() || '';
+    const email = document.getElementById('bookingEmail')?.value?.trim() || '';
+    const phone = document.getElementById('bookingPhone')?.value?.trim() || '';
+    const checkinDate = document.getElementById('bookingDate')?.value || '';
+    const guests = document.getElementById('bookingGuests')?.value || '';
+    const packageName = document.getElementById('packageName')?.value?.trim() || '';
+    const packagePrice = document.getElementById('packagePrice')?.value?.trim() || '';
+    const specialRequests = document.getElementById('bookingRequests')?.value?.trim() || '';
 
     // Validate required fields
     if (!fullName || !email || !phone || !checkinDate || !guests || !packageName) {
-        alert('Please fill in all required fields');
+        console.warn('Validation failed:', { fullName, email, phone, checkinDate, guests, packageName });
+        alert('Please fill in all required fields:\n- Full Name\n- Email\n- Phone\n- Check-in Date\n- Number of Guests\n- Package Name');
+        return;
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address');
         return;
     }
 
     // Prepare data
     const bookingData = {
-        fullName: fullName.trim(),
-        email: email.trim(),
-        phone: phone.trim(),
+        fullName: fullName,
+        email: email,
+        phone: phone,
         checkinDate: checkinDate,
         guests: guests,
-        packageName: packageName.trim(),
-        packagePrice: packagePrice.trim(),
-        specialRequests: specialRequests.trim()
+        packageName: packageName,
+        packagePrice: packagePrice,
+        specialRequests: specialRequests
     };
 
+    console.log('Submitting booking:', bookingData);
+
     // Show loading state
-    const submitButton = form.querySelector('button[type="submit"]');
-    const originalText = submitButton ? submitButton.textContent : 'Submit';
+    const submitButton = document.querySelector('#bookingModal button[onclick="submitBooking()"]');
+    const originalText = submitButton ? submitButton.textContent : 'Submit Booking Request';
     if (submitButton) {
         submitButton.disabled = true;
         submitButton.textContent = 'Submitting...';
@@ -1055,20 +1072,28 @@ function submitBooking(event) {
         body: JSON.stringify(bookingData)
     })
     .then(response => {
+        console.log('Response status:', response.status);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
     })
     .then(data => {
+        console.log('Booking response:', data);
         if (data.success) {
             // Show success modal with animation
             showSuccessModal('Thank you for booking!', data.message);
             form.reset();
+            // Reset package fields
+            document.getElementById('packageName').value = '';
+            document.getElementById('packagePrice').value = '';
             // Close modal if exists
-            const modal = bootstrap.Modal.getInstance(form.closest('.modal'));
-            if (modal) {
-                setTimeout(() => modal.hide(), 2500);
+            const modalElement = document.getElementById('bookingModal');
+            if (modalElement && window.bootstrap) {
+                const modal = bootstrap.Modal.getInstance(modalElement);
+                if (modal) {
+                    setTimeout(() => modal.hide(), 2500);
+                }
             }
         } else {
             alert('Error: ' + (data.message || 'Failed to submit booking'));
