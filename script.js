@@ -497,8 +497,9 @@ function submitGetStarted() {
         submitButton.textContent = 'Submitting...';
     }
 
-    // Send to server
-    fetch('./send-getstarted.php', {
+    // Send to server with cache busting
+    const timestamp = new Date().getTime();
+    fetch(`./send-getstarted.php?t=${timestamp}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

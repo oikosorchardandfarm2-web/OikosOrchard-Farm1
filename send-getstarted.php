@@ -1,13 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-// Load configuration
-require_once __DIR__ . '/gmail-config.php';
-
-// Load PHPMailer
-require_once __DIR__ . '/PHPMailer/Exception.php';
-require_once __DIR__ . '/PHPMailer/PHPMailer.php';
-
 try {
     // Check if request is POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -45,19 +38,9 @@ try {
         exit;
     }
 
-    // Initialize PHPMailer
-    $mail = new PHPMailer();
-    $mail->isSMTP();
-    $mail->Host = SMTP_HOST;
-    $mail->Port = SMTP_PORT;
-    $mail->SMTPSecure = SMTP_SECURE;
-    $mail->SMTPAuth = SMTP_AUTH;
-    $mail->Username = GMAIL_ADDRESS;
-    $mail->Password = GMAIL_APP_PASSWORD;
-    $mail->From = GMAIL_ADDRESS;
-    $mail->FromName = MAIL_FROM_NAME;
-    $mail->isHTML = true;
-    $mail->CharSet = 'UTF-8';
+    // Admin email address
+    $adminEmail = 'oikosorchardandfarm2@gmail.com';
+    $siteEmail = 'oikosorchardandfarm2@gmail.com';
 
     // ====== SEND EMAIL TO ADMIN ======
     $adminSubject = 'New Get Started Request - Oikos Orchard & Farm';
@@ -110,16 +93,14 @@ try {
     </html>
     ";
 
-    $mail->Subject = $adminSubject;
-    $mail->Body = $adminMessage;
-    $mail->addAddress(ADMIN_EMAIL, 'Oikos Admin');
-    
-    $adminEmailSent = false;
-    try {
-        $adminEmailSent = $mail->send();
-    } catch (Exception $e) {
-        error_log("Admin email error: " . $e->getMessage());
-    }
+    // Email headers for admin
+    $adminHeaders = "MIME-Version: 1.0\r\n";
+    $adminHeaders .= "Content-type: text/html; charset=UTF-8\r\n";
+    $adminHeaders .= "From: noreply@oikosorchardandfarm.com\r\n";
+    $adminHeaders .= "Reply-To: {$email}\r\n";
+
+    // Send email to admin
+    $adminEmailSent = mail($adminEmail, $adminSubject, $adminMessage, $adminHeaders);
 
     // ====== SEND CONFIRMATION EMAIL TO USER ======
     $userSubject = 'Thank You for Getting Started - Oikos Orchard & Farm';
@@ -131,7 +112,6 @@ try {
             .container { max-width: 600px; margin: 0 auto; background: #f5f5f5; padding: 20px; border-radius: 8px; }
             .header { background: #27ae60; color: white; padding: 20px; border-radius: 8px 8px 0 0; text-align: center; }
             .content { background: white; padding: 20px; line-height: 1.6; }
-            .button { display: inline-block; background: #27ae60; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
             .footer { text-align: center; color: #999; font-size: 12px; margin-top: 20px; }
         </style>
     </head>
@@ -146,9 +126,8 @@ try {
                 
                 <h3>Your Request Details:</h3>
                 <ul>
-                    <li><strong>Email:</strong> {$email}</li>
-                    <li><strong>Phone:</strong> {$phone}</li>
                     <li><strong>Interested In:</strong> {$interested}</li>
+                    <li><strong>Submitted:</strong> " . date('Y-m-d H:i:s') . "</li>
                 </ul>
 
                 <p>Our team will reach out to you within <strong>24 hours</strong> to discuss your needs and how we can help you.</p>
@@ -174,46 +153,36 @@ try {
     </html>
     ";
 
-    // Clear previous recipients
-    $mail->clearAllRecipients();
-    
-    $mail->Subject = $userSubject;
-    $mail->Body = $userMessage;
-    $mail->addAddress($email, $name);
-    $mail->addReplyTo(GMAIL_ADDRESS, MAIL_FROM_NAME);
+    // Email headers for user
+    $userHeaders = "MIME-Version: 1.0\r\n";
+    $userHeaders .= "Content-type: text/html; charset=UTF-8\r\n";
+    $userHeaders .= "From: Oikos Orchard & Farm <{$siteEmail}>\r\n";
 
-    $userEmailSent = false;
-    try {
-        $userEmailSent = $mail->send();
-    } catch (Exception $e) {
-        error_log("User email error: " . $e->getMessage());
-    }
+    // Send confirmation email to user
+    $userEmailSent = mail($email, $userSubject, $userMessage, $userHeaders);
+
+    // Log the request for records
+    $logEntry = date('Y-m-d H:i:s') . " | Name: {$name} | Email: {$email} | Phone: {$phone} | Interested: {$interested}\n";
+    file_put_contents(__DIR__ . '/getstarted-log.txt', $logEntry, FILE_APPEND);
 
     // Respond based on email results
-    if ($adminEmailSent && $userEmailSent) {
+    if ($adminEmailSent || $userEmailSent) {
         http_response_code(200);
         echo json_encode([
             'success' => true,
             'message' => 'Thank you! We have received your request and will contact you shortly. Check your email for confirmation.'
         ]);
-    } else if ($adminEmailSent) {
-        // Admin received it but user didn't
+    } else {
+        // Even if email fails, we logged it
         http_response_code(200);
         echo json_encode([
             'success' => true,
             'message' => 'Your request has been received! We will contact you soon.'
         ]);
-    } else {
-        http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error sending email. Please try again later or contact us directly.'
-        ]);
     }
 
 } catch (Exception $e) {
     http_response_code(500);
-    error_log("Get Started error: " . $e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => 'Server error. Please try again later.'
