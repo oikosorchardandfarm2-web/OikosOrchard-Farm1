@@ -497,9 +497,8 @@ function submitGetStarted() {
         submitButton.textContent = 'Submitting...';
     }
 
-    // Send to server with cache busting
-    const timestamp = new Date().getTime();
-    fetch(`./send-getstarted.php`, {
+    // Send to server
+    fetch(`/OikosOrchardandFarm/send-getstarted.php`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
