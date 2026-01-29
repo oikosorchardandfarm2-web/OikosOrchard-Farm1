@@ -17,6 +17,7 @@
 // ============ CONFIGURATION ============
 // Replace this with your Google Apps Script deployment URL
 define('GOOGLE_SHEETS_WEBHOOK_URL', 'https://script.google.com/macros/s/AKfycbyfgMWh3i6EvBrf6yyNkrHsX7LFUYXTvzZ3C95oEI7DVcDOmWLXOUdj1j4PMbag_-fI7w/exec');
+define('GOOGLE_SHEET_ID', '1pWE72focDg7ZguylUJIaSysHZg1qxfQ_JiiT4Fk-26c');
 
 // ============ FUNCTION TO SEND DATA TO GOOGLE SHEETS ============
 function sendToGoogleSheets($bookingData) {

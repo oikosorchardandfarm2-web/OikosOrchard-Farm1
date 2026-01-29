@@ -1,14 +1,8 @@
 <?php
-// Error handling for debugging
+// Simple Booking Handler
+header('Content-Type: application/json; charset=utf-8');
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-ini_set('log_errors', 1);
-
-header('Content-Type: application/json; charset=utf-8');
-
-// Include Google Sheets integration and email helper
-require_once __DIR__ . '/google-sheets-integration.php';
-require_once __DIR__ . '/send-email-helper.php';
 
 try {
     // Check if request is POST
@@ -76,16 +70,48 @@ try {
     $bookings[] = $bookingData;
     @file_put_contents($bookingsFile, json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     
-    // Send to Google Sheets
-    sendToGoogleSheets($bookingData);
+    // Send to Google Sheets (non-blocking - don't fail if it has issues)
+    try {
+        $sheetId = '1pWE72focDg7ZguylUJIaSysHZg1qxfQ_JiiT4Fk-26c';
+        $googleSheetUrl = 'https://script.google.com/macros/s/AKfycbyfgMWh3i6EvBrf6yyNkrHsX7LFUYXTvzZ3C95oEI7DVcDOmWLXOUdj1j4PMbag_-fI7w/exec';
+        
+        $payload = json_encode([
+            'sheetId' => $sheetId,
+            'bookingData' => $bookingData
+        ]);
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $googleSheetUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        
+        error_log("Google Sheets response: HTTP $httpCode - $response");
+    } catch (Exception $e) {
+        error_log("Google Sheets error: " . $e->getMessage());
+    }
     
-    // Send emails via Gmail SMTP using PHPMailer
-    sendBookingEmailsViaGmail($email, $fullName, $packageName, $packagePrice, $checkinDate, $guests, $specialRequests, $phone, $timestamp);
+    // Send simple email notification
+    try {
+        $subject = "New Booking Request - " . $packageName;
+        $body = "New Booking:\n\nName: $fullName\nEmail: $email\nPhone: $phone\nPackage: $packageName\nCheck-in: $checkinDate\nGuests: $guests\n\nSubmitted: $timestamp";
+        
+        @mail($gmailAddress, $subject, $body, "From: $email\r\nContent-Type: text/plain");
+    } catch (Exception $e) {
+        error_log("Email error: " . $e->getMessage());
+    }
     
     // Success response
     echo json_encode([
         'success' => true,
-        'message' => 'Booking submitted successfully! A confirmation email has been sent to ' . $email . '. Our team will contact you within 24 hours.',
+        'message' => 'Booking submitted successfully! Our team will contact you within 24 hours.',
         'data' => $bookingData
     ]);
     exit;
@@ -96,8 +122,8 @@ try {
     exit;
 }
 
+?>
 
-// Email functions are now in send-email-helper.php
 // Old functions have been removed to use PHPMailer via Gmail SMTP
 
 ?>
