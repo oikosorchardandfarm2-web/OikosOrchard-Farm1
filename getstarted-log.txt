@@ -4,3 +4,4 @@
 2026-01-29 08:40:36 | Name: Test | Email: test@test.com | Phone: 09123456789 | Interested: Glamping
 2026-01-29 08:43:29 | Name: Center for Healthcare Professions Cebu, Inc. | Email: teacher@chpcebu.com | Phone: 09948962820 | Interested: Glamping
 2026-01-29 08:58:54 | Name: Test User | Email: test@test.com | Phone: 09123456789 | Interested: Glamping
+2026-01-29 08:59:56 | Name: Daisy | Email: info@chpcebu.com | Phone: 09948962820 | Interested: Glamping
