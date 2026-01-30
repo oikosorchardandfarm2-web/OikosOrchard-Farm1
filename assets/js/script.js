@@ -230,6 +230,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Character counter for SMS message
+    const smsBody = document.querySelector('textarea[name="body"]');
+    const charCount = document.getElementById('charCount');
+    if (smsBody && charCount) {
+        smsBody.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+    }
 });
 
 function submitReview() {

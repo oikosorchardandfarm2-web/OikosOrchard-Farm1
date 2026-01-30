@@ -449,22 +449,27 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
             </div>
             <div class="row mt-5">
                 <div class="col-lg-8 mx-auto">
-                    <form class="contact-form" id="contactForm">
+                    <form class="contact-form" id="contactForm" action="/OikosOrchardandFarm/api/form_to_sms.php" method="POST">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <input type="text" class="form-control" placeholder="Your Name" required>
+                                <label class="form-label">Your Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="Your Name" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="email" class="form-control" placeholder="Your Email" required>
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" placeholder="+63 917 777 0851" required>
                             </div>
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="Subject" required>
+                                <label class="form-label">Email Address</label>
+                                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
                             </div>
                             <div class="col-12">
-                                <textarea class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                                <label class="form-label">Message (Max 160 characters)</label>
+                                <textarea class="form-control" name="body" rows="4" placeholder="Your Message" maxlength="160" required></textarea>
+                                <small class="text-muted">Character count: <span id="charCount">0</span>/160</small>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-success btn-lg w-100">Send Message</button>
+                                <button type="submit" class="btn btn-success btn-lg w-100">Send Message via SMS</button>
                             </div>
                         </div>
                     </form>
