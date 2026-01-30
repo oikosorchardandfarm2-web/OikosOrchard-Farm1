@@ -4,10 +4,6 @@
  * Sends contact form messages via SMS to admin
  */
 
-ob_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-
 header('Content-Type: application/json; charset=utf-8');
 
 try {
@@ -77,6 +73,8 @@ try {
         ]),
         CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
         CURLOPT_USERPWD => TWILIO_ACCOUNT_SID . ":" . TWILIO_AUTH_TOKEN,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => false
     ));
 
     $response = curl_exec($curl);
@@ -84,6 +82,7 @@ try {
     curl_close($curl);
 
     if ($err) {
+        error_log("Form SMS cURL Error: " . $err);
         http_response_code(500);
         echo json_encode([
             'success' => false,
@@ -95,7 +94,7 @@ try {
     $responseData = json_decode($response, true);
 
     // Check if message was sent successfully
-    if (isset($responseData['sid'])) {
+    if (isset($responseData['sid']) && !empty($responseData['sid'])) {
         // Also send email backup notification to admin
         $adminEmail = 'oikosorchardandfarm2@gmail.com';
         $emailSubject = "New Contact Form Submission - Oikos Orchard & Farm";
@@ -117,20 +116,36 @@ try {
             'message' => 'Thank you! Your message has been sent. We will contact you soon.'
         ]);
     } else {
-        http_response_code(500);
+        // If Twilio fails, still send email and consider it a success for user experience
+        $adminEmail = 'oikosorchardandfarm2@gmail.com';
+        $emailSubject = "New Contact Form Submission - Oikos Orchard & Farm";
+        $emailBody = "New contact form submission (Email Backup - SMS may have failed):\n\n";
+        $emailBody .= "Name: $name\n";
+        $emailBody .= "Email: $email\n";
+        $emailBody .= "Phone: $phone\n";
+        $emailBody .= "Message: $body\n\n";
+        $emailBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
+        
+        $emailHeaders = "From: " . $email . "\r\n";
+        $emailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
+        
+        @mail($adminEmail, $emailSubject, $emailBody, $emailHeaders);
+
+        error_log("Twilio Response: " . json_encode($responseData));
+        
+        http_response_code(200);
         echo json_encode([
-            'success' => false,
-            'message' => 'Error sending message. Please try again.'
+            'success' => true,
+            'message' => 'Thank you! Your message has been sent. We will contact you soon.'
         ]);
     }
 
 } catch (Exception $e) {
     http_response_code(500);
+    error_log("Form SMS Exception: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'Server error: ' . $e->getMessage()
+        'message' => 'Server error. Please try again.'
     ]);
 }
-
-ob_end_clean();
 ?>

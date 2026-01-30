@@ -548,6 +548,76 @@ function submitGetStarted() {
 }
 
 // ================================
+// CONTACT SMS FORM SUBMISSION
+// ================================
+
+function submitContactSms() {
+    const form = document.getElementById('contactSmsForm');
+    const name = form.querySelector('input[name="name"]').value.trim();
+    const email = form.querySelector('input[name="email"]').value.trim();
+    const phone = form.querySelector('input[name="phone"]').value.trim();
+    const body = form.querySelector('textarea[name="body"]').value.trim();
+
+    // Validate required fields
+    if (!name || !email || !phone || !body) {
+        showAlert('Please fill in all fields', 'danger');
+        return;
+    }
+
+    // Validate email
+    if (!isValidEmail(email)) {
+        showAlert('Please enter a valid email address', 'danger');
+        return;
+    }
+
+    // Validate message length
+    if (body.length > 160) {
+        showAlert('Message cannot exceed 160 characters', 'danger');
+        return;
+    }
+
+    // Create FormData for form submission
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('body', body);
+
+    // Show loading state
+    const submitButton = form.querySelector('button[type="button"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+
+    // Send to server
+    fetch(`/OikosOrchardandFarm/api/form_to_sms.php`, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        if (responseData.success) {
+            showAlert(responseData.message || 'Message sent successfully!', 'success');
+            form.reset();
+            document.getElementById('charCount').textContent = '0';
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+            if (modal) modal.hide();
+        } else {
+            showAlert('Error: ' + (responseData.message || 'Failed to send message'), 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Contact SMS submission error:', error);
+        showAlert('Error submitting form: ' + error.message, 'danger');
+    })
+    .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+    });
+}
+
+// ================================
 // UTILITY FUNCTIONS
 // ================================
 

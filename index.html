@@ -535,7 +535,7 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="getStartedForm">
+                    <form id="contactSmsForm">
                         <div class="mb-3">
                             <label class="form-label">Full Name</label>
                             <input type="text" class="form-control" name="name" required>
@@ -545,25 +545,19 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                             <input type="email" class="form-control" name="email" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Contact Number</label>
-                            <input type="text" class="form-control" name="phone" required>
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" name="phone" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Interested In</label>
-                            <select class="form-select" name="interested" required>
-                                <option value="">Select...</option>
-                                <option value="Herbs & Fruits">Herbs & Fruits</option>
-                                <option value="Glamping">Glamping</option>
-                                <option value="Car Glamping">Car Glamping</option>
-                                <option value="Farm Tour">Farm Tour</option>
-                                <option value="Seedlings">Seedlings</option>
-                            </select>
+                            <label class="form-label">Message (Max 160 characters)</label>
+                            <textarea class="form-control" name="body" maxlength="160" required></textarea>
+                            <small class="text-muted">Character count: <span id="charCount">0</span>/160</small>
                         </div>
+                        <button type="button" onclick="submitContactSms()" class="btn btn-success btn-lg w-100">Send Message via SMS</button>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" onclick="submitGetStarted()">Get Started</button>
                 </div>
             </div>
         </div>
