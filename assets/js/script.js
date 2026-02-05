@@ -458,7 +458,12 @@ if (contactForm) {
 // GET STARTED FORM SUBMISSION
 // ================================
 
-function submitGetStarted() {
+function submitGetStarted(e) {
+    // Prevent form submission if called from onclick
+    if (e && e.preventDefault) {
+        e.preventDefault();
+    }
+    
     const form = document.getElementById('getStartedForm');
     const inputs = form.querySelectorAll('input, select');
     let isValid = true;
@@ -485,7 +490,7 @@ function submitGetStarted() {
         return;
     }
 
-    // Get form data using form elements with names
+    // Get form data
     const name = form.querySelector('input[name="name"]').value;
     const email = form.querySelector('input[name="email"]').value;
     const phone = form.querySelector('input[name="phone"]').value;
@@ -499,25 +504,22 @@ function submitGetStarted() {
     };
 
     // Show loading state
-    const submitButton = form.closest('.modal-content').querySelector('button[onclick="submitGetStarted()"]');
-    const originalText = submitButton ? submitButton.textContent : 'Get Started';
-    if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Submitting...';
-    }
+    const submitButton = form.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Submitting...';
 
-    // Send to server (use PHP on localhost, Netlify function on live)
-    const endpoint = window.location.hostname === 'localhost' 
-      ? '/OikosOrchardandFarm/api/send-getstarted.php'
-      : '/.netlify/functions/send-getstarted';
+    // Send to Formspree
+    const formspreeEndpoint = 'https://formspree.io/f/mbdardep';
 
-    console.log('Sending Get Started to:', endpoint);
+    console.log('Sending Get Started to Formspree:', formspreeEndpoint);
     console.log('Payload:', data);
 
-    fetch(endpoint, {
+    fetch(formspreeEndpoint, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify(data)
     })
@@ -533,29 +535,23 @@ function submitGetStarted() {
     })
     .then(responseData => {
         console.log('Response data:', responseData);
-        if (responseData.success) {
-            showAlert(responseData.message, 'success');
-            form.reset();
-            // Reset validation classes
-            inputs.forEach(input => {
-                input.classList.remove('is-invalid');
-            });
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
-            if (modal) modal.hide();
-        } else {
-            showAlert('Error: ' + (responseData.message || 'Failed to submit request'), 'danger');
-        }
+        showAlert('Thank you! We have received your request. Check your email for confirmation.', 'success');
+        form.reset();
+        // Reset validation classes
+        inputs.forEach(input => {
+            input.classList.remove('is-invalid');
+        });
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+        if (modal) modal.hide();
     })
     .catch(error => {
         console.error('Get Started submission error:', error);
         showAlert('Error submitting request: ' + error.message, 'danger');
     })
     .finally(() => {
-        if (submitButton) {
-            submitButton.disabled = false;
-            submitButton.textContent = originalText;
-        }
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
     });
 }
 
