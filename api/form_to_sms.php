@@ -63,12 +63,6 @@ try {
         exit;
     }
 
-    // SMS notification details
-    $ownerPhone = "09948962820";
-    // Convert to international format: 09948962820 -> 639948962820
-    $phoneIntl = '63' . substr($ownerPhone, 1);
-    $smsMessage = "New: $name | $body";
-
     // Initialize PHPMailer for sending via Gmail SMTP
     $mail = new PHPMailer(true);
     
@@ -83,35 +77,7 @@ try {
         $mail->Password = GMAIL_APP_PASSWORD;
         $mail->setFrom(GMAIL_ADDRESS, 'Oikos Orchard & Farm');
 
-        $smsSent = false;
-        
-        // Try sending SMS via email-to-SMS gateways (using working carriers)
-        $smsGateways = array(
-            $phoneIntl . "@mail.globelabs.com.ph",   // Globe
-            $phoneIntl . "@smspush.smart.com.ph"     // Smart
-        );
-        
-        foreach ($smsGateways as $gateway) {
-            $mail->clearAddresses();
-            $mail->addAddress($gateway);
-            $mail->Subject = "Oikos";
-            $mail->Body = $smsMessage;
-            $mail->isHTML = false;
-            
-            try {
-                if ($mail->send()) {
-                    $smsSent = true;
-                    error_log("SMS sent successfully to: $gateway");
-                    // Continue to try other gateways for better delivery
-                }
-            } catch (Exception $e) {
-                error_log("SMS failed to $gateway: " . $e->getMessage());
-                continue;
-            }
-        }
-
-        // Also send to admin email
-        $mail->clearAddresses();
+        // Send email to admin only
         $mail->addAddress(ADMIN_EMAIL);
         $mail->Subject = "New Contact: $name";
         $mail->Body = "New Contact Form Submission\n";
