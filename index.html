@@ -453,20 +453,20 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                     <form class="contact-form" id="contactForm" action="/OikosOrchardandFarm/api/form_to_sms.php" method="POST">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label">Your Name</label>
-                                <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+                                <label for="contact-name" class="form-label">Your Name</label>
+                                <input type="text" id="contact-name" class="form-control" name="name" placeholder="Your Name" autocomplete="name" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Phone Number</label>
-                                <input type="tel" class="form-control" name="phone" placeholder="+63 917 777 0851" required>
+                                <label for="contact-phone" class="form-label">Phone Number</label>
+                                <input type="tel" id="contact-phone" class="form-control" name="phone" placeholder="+63 917 777 0851" autocomplete="tel" required>
                             </div>
                             <div class="col-12">
-                                <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                                <label for="contact-email" class="form-label">Email Address</label>
+                                <input type="email" id="contact-email" class="form-control" name="email" placeholder="Your Email" autocomplete="email" required>
                             </div>
                             <div class="col-12">
-                                <label class="form-label">Message (Max 160 characters)</label>
-                                <textarea class="form-control" name="body" rows="4" placeholder="Your Message" maxlength="160" required></textarea>
+                                <label for="contact-body" class="form-label">Message (Max 160 characters)</label>
+                                <textarea id="contact-body" class="form-control" name="body" rows="4" placeholder="Your Message" autocomplete="off" maxlength="160" required></textarea>
                                 <small class="text-muted">Character count: <span id="charCount">0</span>/160</small>
                             </div>
                             <div class="col-12">
@@ -535,20 +535,20 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                 <div class="modal-body">
                     <form id="contactSmsForm">
                         <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" name="name" required>
+                            <label for="sms-name" class="form-label">Full Name</label>
+                            <input type="text" id="sms-name" class="form-control" name="name" autocomplete="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" class="form-control" name="email" required>
+                            <label for="sms-email" class="form-label">Email Address</label>
+                            <input type="email" id="sms-email" class="form-control" name="email" autocomplete="email" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" name="phone" required>
+                            <label for="sms-phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="sms-phone" class="form-control" name="phone" autocomplete="tel" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Message (Max 160 characters)</label>
-                            <textarea class="form-control" name="body" maxlength="160" required></textarea>
+                            <label for="sms-body" class="form-label">Message (Max 160 characters)</label>
+                            <textarea id="sms-body" class="form-control" name="body" autocomplete="off" maxlength="160" required></textarea>
                             <small class="text-muted">Character count: <span id="charCount">0</span>/160</small>
                         </div>
                         <button type="button" onclick="submitContactSms()" class="btn btn-success btn-lg w-100">Send Message via SMS</button>
@@ -601,16 +601,16 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                 <div class="modal-body">
                     <form id="reviewForm">
                         <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="reviewName" required>
+                            <label for="reviewName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="reviewName" autocomplete="name" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Location/Title</label>
-                            <input type="text" class="form-control" id="reviewLocation" placeholder="e.g., Farmer, California" required>
+                            <label for="reviewLocation" class="form-label">Location/Title</label>
+                            <input type="text" class="form-control" id="reviewLocation" placeholder="e.g., Farmer, California" autocomplete="off" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Your Review</label>
-                            <textarea class="form-control" id="reviewText" rows="4" placeholder="Share your experience..." required></textarea>
+                            <label for="reviewText" class="form-label">Your Review</label>
+                            <textarea class="form-control" id="reviewText" rows="4" placeholder="Share your experience..." autocomplete="off" required></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Rating</label>
@@ -645,8 +645,8 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                 <div class="modal-body">
                     <form id="bookingForm">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Select Package *</label>
-                            <select class="form-control" id="packageSelect" required onchange="updatePackageFromSelect()">
+                            <label for="packageSelect" class="form-label fw-bold">Select Package *</label>
+                            <select class="form-control" id="packageSelect" autocomplete="off" required onchange="updatePackageFromSelect()">
                                 <option value="">-- Choose a Package --</option>
                                 <option value="Glamping for 2|3200">Glamping for 2 - ₱3,200</option>
                                 <option value="Glamping for 4|4200">Glamping for 4 - ₱4,200</option>
@@ -658,25 +658,25 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Selected Package</label>
-                            <input type="text" class="form-control" id="packageName" name="packageName" readonly style="background-color: #f0f0f0;">
+                            <label for="packageName" class="form-label fw-bold">Selected Package</label>
+                            <input type="text" class="form-control" id="packageName" name="packageName" autocomplete="off" readonly style="background-color: #f0f0f0;">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Price</label>
-                            <input type="text" class="form-control" id="packagePrice" name="packagePrice" readonly style="background-color: #f0f0f0;">
+                            <label for="packagePrice" class="form-label fw-bold">Price</label>
+                            <input type="text" class="form-control" id="packagePrice" name="packagePrice" autocomplete="off" readonly style="background-color: #f0f0f0;">
                         </div>
                         <hr>
                         <div class="mb-3">
                             <label for="bookingFullName" class="form-label">Full Name *</label>
-                            <input type="text" class="form-control" id="bookingFullName" name="fullName" required>
+                            <input type="text" class="form-control" id="bookingFullName" name="fullName" autocomplete="name" required>
                         </div>
                         <div class="mb-3">
                             <label for="bookingEmail" class="form-label">Email Address *</label>
-                            <input type="email" class="form-control" id="bookingEmail" name="email" required>
+                            <input type="email" class="form-control" id="bookingEmail" name="email" autocomplete="email" required>
                         </div>
                         <div class="mb-3">
                             <label for="bookingPhone" class="form-label">Phone Number *</label>
-                            <input type="tel" class="form-control" id="bookingPhone" name="phone" required>
+                            <input type="tel" class="form-control" id="bookingPhone" name="phone" autocomplete="tel" required>
                         </div>
                         <div class="mb-3">
                             <label for="bookingDate" class="form-label">Check-in Date *</label>

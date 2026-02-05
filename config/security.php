@@ -27,6 +27,11 @@ session_set_cookie_params([
     'samesite' => 'Strict'
 ]);
 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Regenerate session ID to prevent session fixation
 if (!isset($_SESSION['_initiated'])) {
     session_regenerate_id(true);
@@ -47,7 +52,7 @@ header('X-Frame-Options: SAMEORIGIN');
 header('X-XSS-Protection: 1; mode=block');
 
 // Content Security Policy (CSP)
-header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://embed.tawk.to; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self' https:;");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://embed.tawk.to https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://embed.tawk.to; img-src 'self' data: https: blob:; font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com https://embed.tawk.to; connect-src 'self' https: ws: wss: https://embed.tawk.to; frame-src 'self' https://embed.tawk.to;");
 
 // Referrer Policy
 header('Referrer-Policy: strict-origin-when-cross-origin');

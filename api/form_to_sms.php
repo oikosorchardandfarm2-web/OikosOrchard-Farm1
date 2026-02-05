@@ -1,13 +1,21 @@
 <?php
 /**
- * Contact Form to SMS Handler
- * Sends contact form messages via SMS to admin
+ * Contact Form Email Handler
+ * Sends SMS notifications via email-to-SMS gateways using Gmail SMTP
  */
 
-// Load security configuration
+// Prevent any output before JSON
+ob_start();
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+// Load configuration
 require_once __DIR__ . '/../config/security.php';
+require_once __DIR__ . '/../config/gmail-config.php';
+require_once __DIR__ . '/send-sms.php';
 
 header('Content-Type: application/json; charset=utf-8');
+ob_end_clean();
 
 try {
     // Check if request is POST
@@ -19,7 +27,7 @@ try {
 
     // Get form data
     $name = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : '';
-    $email = isset($_POST['email']) ? htmlspecialchars(trim($_POST['email'])) : '';
+    $email = isset($_POST['email']) ? filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) : '';
     $phone = isset($_POST['phone']) ? htmlspecialchars(trim($_POST['phone'])) : '';
     $body = isset($_POST['body']) ? htmlspecialchars(trim($_POST['body'])) : '';
 
@@ -37,115 +45,76 @@ try {
         exit;
     }
 
-    // Validate message length (SMS max 160 characters)
+    // Validate message length
     if (strlen($body) > 160) {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Message exceeds 160 character limit']);
         exit;
     }
 
-    // Load Twilio configuration
-    require_once __DIR__ . '/../config/twilio-config.php';
-
     // Log the contact form submission
     $logEntry = date('Y-m-d H:i:s') . " | Name: {$name} | Email: {$email} | Phone: {$phone} | Message: {$body}\n";
-    @file_put_contents(__DIR__ . '/contact-log.txt', $logEntry, FILE_APPEND);
+    $logResult = @file_put_contents(__DIR__ . '/contact-log.txt', $logEntry, FILE_APPEND);
 
-    // Format SMS message
-    $smsMessage = "📧 New Contact from Oikos Website:\n";
-    $smsMessage .= "Name: $name\n";
-    $smsMessage .= "Email: $email\n";
-    $smsMessage .= "Phone: $phone\n";
-    $smsMessage .= "Message: $body";
-
-    // Send SMS to admin using Twilio
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.twilio.com/2010-04-01/Accounts/" . TWILIO_ACCOUNT_SID . "/Messages.json",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => http_build_query([
-            'MessagingServiceSid' => TWILIO_MESSAGING_SERVICE_SID,
-            'To' => NOTIFY_PHONE_NUMBER,
-            'Body' => $smsMessage
-        ]),
-        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-        CURLOPT_USERPWD => TWILIO_ACCOUNT_SID . ":" . TWILIO_AUTH_TOKEN,
-        CURLOPT_SSL_VERIFYPEER => false,
-        CURLOPT_SSL_VERIFYHOST => false
-    ));
-
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
-    curl_close($curl);
-
-    if ($err) {
-        error_log("Form SMS cURL Error: " . $err);
+    if (!$logResult) {
         http_response_code(500);
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error sending message. Please try again.'
-        ]);
+        echo json_encode(['success' => false, 'message' => 'Error saving message. Please try again.']);
         exit;
     }
 
-    $responseData = json_decode($response, true);
+    // SMS notification details
+    $ownerPhone = "09948962820";
+    $phoneIntl = str_replace('0', '63', $ownerPhone);
+    $smsSubject = "Oikos Contact";
+    $smsBody = "New: $name | $body";
+    
+    $fromEmail = GMAIL_ADDRESS;
+    $fromName = "Oikos Orchard & Farm";
 
-    // Check if message was sent successfully
-    if (isset($responseData['sid']) && !empty($responseData['sid'])) {
-        // Also send email backup notification to admin
-        $adminEmail = 'oikosorchardandfarm2@gmail.com';
-        $emailSubject = "New Contact Form Submission - Oikos Orchard & Farm";
-        $emailBody = "New contact form submission:\n\n";
-        $emailBody .= "Name: $name\n";
-        $emailBody .= "Email: $email\n";
-        $emailBody .= "Phone: $phone\n";
-        $emailBody .= "Message: $body\n\n";
-        $emailBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
-        
-        $emailHeaders = "From: " . $email . "\r\n";
-        $emailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
-        
-        @mail($adminEmail, $emailSubject, $emailBody, $emailHeaders);
-
-        http_response_code(200);
-        echo json_encode([
-            'success' => true,
-            'message' => 'Thank you! Your message has been sent. We will contact you soon.'
-        ]);
-    } else {
-        // If Twilio fails, still send email and consider it a success for user experience
-        $adminEmail = 'oikosorchardandfarm2@gmail.com';
-        $emailSubject = "New Contact Form Submission - Oikos Orchard & Farm";
-        $emailBody = "New contact form submission (Email Backup - SMS may have failed):\n\n";
-        $emailBody .= "Name: $name\n";
-        $emailBody .= "Email: $email\n";
-        $emailBody .= "Phone: $phone\n";
-        $emailBody .= "Message: $body\n\n";
-        $emailBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
-        
-        $emailHeaders = "From: " . $email . "\r\n";
-        $emailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
-        
-        @mail($adminEmail, $emailSubject, $emailBody, $emailHeaders);
-
-        error_log("Twilio Response: " . json_encode($responseData));
-        
-        http_response_code(200);
-        echo json_encode([
-            'success' => true,
-            'message' => 'Thank you! Your message has been sent. We will contact you soon.'
-        ]);
+    // Try to send SMS via all three carriers (DITO, Globe, Smart)
+    $smsSent = false;
+    
+    // DITO (primary)
+    if (sendEmailViaSMTP($phoneIntl . "@text.ditophone.com", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
+        $smsSent = true;
+        error_log("SMS sent via DITO");
     }
+    
+    // Globe (backup)
+    if (sendEmailViaSMTP($phoneIntl . "@mail.globelabs.com.ph", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
+        $smsSent = true;
+        error_log("SMS sent via Globe");
+    }
+    
+    // Smart (backup)
+    if (sendEmailViaSMTP($phoneIntl . "@smspush.smart.com.ph", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
+        $smsSent = true;
+        error_log("SMS sent via Smart");
+    }
+    
+    // Also send to admin email
+    $adminEmail = ADMIN_EMAIL;
+    $adminSubject = "New Contact: $name";
+    $adminBody = "New Contact Form Submission\n";
+    $adminBody .= "============================\n\n";
+    $adminBody .= "Name: " . $name . "\n";
+    $adminBody .= "Email: " . $email . "\n";
+    $adminBody .= "Phone: " . $phone . "\n";
+    $adminBody .= "Message: " . $body . "\n\n";
+    $adminBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
+    
+    sendEmailViaSMTP($adminEmail, $adminSubject, $adminBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD);
+
+    // Return success
+    http_response_code(200);
+    echo json_encode([
+        'success' => true,
+        'message' => 'Thank you! Your message has been received. We will contact you soon.'
+    ]);
 
 } catch (Exception $e) {
     http_response_code(500);
-    error_log("Form SMS Exception: " . $e->getMessage());
+    error_log("Form Exception: " . $e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => 'Server error. Please try again.'

@@ -18,6 +18,7 @@ class PHPMailer
     public $AltBody = '';
     public $isHTML = true;
     public $CharSet = 'UTF-8';
+    public $ErrorInfo = '';
     
     private $to = [];
     private $cc = [];
@@ -128,6 +129,7 @@ class PHPMailer
             if ($this->connection) {
                 fclose($this->connection);
             }
+            $this->ErrorInfo = $e->getMessage();
             throw $e;
         }
     }
