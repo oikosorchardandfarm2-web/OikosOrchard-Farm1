@@ -77,12 +77,15 @@ try {
         $sheetId = '1pWE72focDg7ZguylUJIaSysHZg1qxfQ_JiiT4Fk-26c';
         $googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwgTqy_jJGV02649VuPAi96dzaHOtwlc6gGmiWMxCYNe7I8jTE17b18C5qIt1etGRuXiw/exec';
         
+        // Ensure phone is sent as string with leading apostrophe for Google Sheets
+        $phoneForSheet = "'" . $bookingData['phone'];
+        
         $payload = json_encode([
             'sheetId' => $sheetId,
             'bookingId' => $bookingData['id'],
             'fullName' => $bookingData['fullName'],
             'email' => $bookingData['email'],
-            'phone' => $bookingData['phone'],
+            'phone' => $phoneForSheet,
             'checkinDate' => $bookingData['checkinDate'],
             'guests' => $bookingData['guests'],
             'packageName' => $bookingData['packageName'],
