@@ -74,14 +74,24 @@ try {
     
     // Send immediate success response to user
     http_response_code(200);
+    header('Content-Type: application/json; charset=utf-8');
+    
+    // Ensure proper JSON encoding with all special characters escaped
     $successResponse = json_encode([
         'success' => true,
         'message' => 'Booking submitted successfully! Check your email for confirmation.',
-        'data' => $bookingData
-    ]);
+        'data' => [
+            'id' => $bookingData['id'],
+            'fullName' => $bookingData['fullName'],
+            'email' => $bookingData['email'],
+            'packageName' => $bookingData['packageName']
+        ]
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    
+    // Ensure output buffering is clean
+    ob_clean();
     
     // Send response immediately and close connection to allow background processing
-    header('Content-Length: ' . strlen($successResponse));
     echo $successResponse;
     flush();
     
@@ -90,8 +100,9 @@ try {
         fastcgi_finish_request();
     } else {
         // For non-FPM environments
-        ob_end_flush();
-        flush();
+        if (ob_get_level()) {
+            ob_end_flush();
+        }
     }
     
     // ============ BACKGROUND PROCESSING - User won't wait for this ============
