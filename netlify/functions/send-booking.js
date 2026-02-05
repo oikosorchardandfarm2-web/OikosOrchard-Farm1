@@ -1,6 +1,4 @@
-// Google Apps Script webhook URL
-const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyfgMWh3i6EvBrf6yyNkrHsX7LFUYXTvzZ3C95oEI7DVcDOmWLXOUdj1j4PMbag_-fI7w/exec';
-
+// Simple booking handler - logs and returns success
 exports.handler = async (event, context) => {
   // Add CORS headers
   const headers = {
@@ -33,7 +31,7 @@ exports.handler = async (event, context) => {
     const data = JSON.parse(event.body);
     console.log('Received booking data:', data);
 
-    // Safely extract and trim values, ensuring they're strings
+    // Safely extract and trim values
     const fullName = String(data.fullName || '').trim();
     const email = String(data.email || '').trim();
     const phone = String(data.phone || '').trim();
@@ -60,48 +58,24 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Prepare booking data
-    const bookingData = {
-      fullName: fullName,
-      email: email,
-      phone: phone,
-      checkinDate: checkinDate,
-      guests: guests,
-      packageName: packageName,
-      packagePrice: String(data.packagePrice || '').trim(),
-      specialRequests: String(data.specialRequests || '').trim(),
-      timestamp: new Date().toLocaleString(),
-      bookingId: 'booking_' + Date.now()
-    };
+    // Log booking
+    console.log('=== BOOKING SUBMISSION ===');
+    console.log('Name:', fullName);
+    console.log('Email:', email);
+    console.log('Phone:', phone);
+    console.log('Check-in:', checkinDate);
+    console.log('Guests:', guests);
+    console.log('Package:', packageName);
+    console.log('Timestamp:', new Date().toISOString());
+    console.log('==========================');
 
-    console.log('Sending to Google Sheets:', bookingData);
-
-    // Send to Google Apps Script
-    const sheetResponse = await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(bookingData)
-    });
-
-    console.log('Google Sheets response status:', sheetResponse.status);
-    const sheetResponseText = await sheetResponse.text();
-    console.log('Google Sheets response:', sheetResponseText);
-
-    if (sheetResponse.status >= 200 && sheetResponse.status < 300) {
-      console.log('Successfully sent to Google Sheets:', bookingData.bookingId);
-    } else {
-      console.warn('Google Sheets returned non-2xx status:', sheetResponse.status);
-    }
-
+    // Return success
     return {
       statusCode: 200,
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Booking submitted successfully! A confirmation email has been sent to ' + data.email + '. Our team will contact you within 24 hours at ' + data.phone + '.',
-        data: bookingData
+        message: 'Thank you! Your booking request has been received. We will contact you within 24 hours to confirm.'
       })
     };
 
@@ -112,8 +86,7 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({ 
         success: false, 
-        message: 'Server error: ' + error.message,
-        error: error.toString()
+        message: 'Server error. Please try again later.'
       })
     };
   }
