@@ -506,7 +506,7 @@ function submitGetStarted() {
         submitButton.textContent = 'Submitting...';
     }
 
-    // Send to server (use Netlify function or local PHP)
+    // Send to server (use PHP on localhost, Netlify function on live)
     const endpoint = window.location.hostname === 'localhost' 
       ? '/OikosOrchardandFarm/api/send-getstarted.php'
       : '/.netlify/functions/send-getstarted';

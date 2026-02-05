@@ -47,56 +47,29 @@ try {
         exit;
     }
 
-    // Admin WhatsApp number (international format)
+    // Admin WhatsApp number (international format) - for reference only
     $adminWhatsApp = '639177770851'; // +63 917 777 0851
-
-    // Format WhatsApp message
-    $whatsappMessage = "🌿 *New Get Started Inquiry*\n\n";
-    $whatsappMessage .= "*Name:* $name\n";
-    $whatsappMessage .= "*Email:* $email\n";
-    $whatsappMessage .= "*Phone:* $phone\n";
-    $whatsappMessage .= "*Interested In:* $interested\n";
-    $whatsappMessage .= "*Submitted:* " . date('Y-m-d H:i:s') . "\n\n";
-    $whatsappMessage .= "Please follow up within 24 hours.";
-
-    // URL encode the message for WhatsApp API
-    $encodedMessage = urlencode($whatsappMessage);
 
     // Log the inquiry
     $logEntry = date('Y-m-d H:i:s') . " | Name: {$name} | Email: {$email} | Phone: {$phone} | Interested: {$interested}\n";
     @file_put_contents(__DIR__ . '/getstarted-log.txt', $logEntry, FILE_APPEND);
-
-    // Send WhatsApp message using WhatsApp Web API (Click to Chat)
-    // Note: This creates a shareable link that the admin can click to open WhatsApp
-    $whatsappLink = "https://wa.me/$adminWhatsApp?text=$encodedMessage";
     
-    // For automatic sending, you would need a WhatsApp Business API integration
-    // For now, we'll log it and return success with WhatsApp link
-    
-    // Email backup notification to admin
-    $adminEmail = getenv('ADMIN_EMAIL') ?: 'admin@example.com';
-    $emailSubject = "New Get Started Inquiry - Oikos Orchard & Farm";
-    $emailBody = "New inquiry received:\n\n";
-    $emailBody .= "Name: $name\n";
-    $emailBody .= "Email: $email\n";
-    $emailBody .= "Phone: $phone\n";
-    $emailBody .= "Interested In: $interested\n\n";
-    $emailBody .= "WhatsApp Link: $whatsappLink\n\n";
-    $emailBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
-    $emailBody .= "Please follow up within 24 hours.";
-    
-    $emailHeaders = "From: " . $adminEmail . "\r\n";
-    $emailHeaders .= "Content-Type: text/plain; charset=utf-8\r\n";
-    
-    // Send email notification
-    @mail($adminEmail, $emailSubject, $emailBody, $emailHeaders);
+    // Log entry with detailed info
+    $detailedLog = "=== GET STARTED SUBMISSION ===\n";
+    $detailedLog .= "Timestamp: " . date('Y-m-d H:i:s') . "\n";
+    $detailedLog .= "Name: {$name}\n";
+    $detailedLog .= "Email: {$email}\n";
+    $detailedLog .= "Phone: {$phone}\n";
+    $detailedLog .= "Interested In: {$interested}\n";
+    $detailedLog .= "IP Address: " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown') . "\n";
+    $detailedLog .= "==============================\n\n";
+    @file_put_contents(__DIR__ . '/getstarted-detailed.txt', $detailedLog, FILE_APPEND);
 
     // Respond with success
     http_response_code(200);
     $response = json_encode([
         'success' => true,
-        'message' => 'Thank you for your interest! Our team will contact you within 24 hours via WhatsApp or email.',
-        'whatsappLink' => $whatsappLink
+        'message' => 'Thank you for your interest! Our team will contact you within 24 hours.'
     ]);
 
 } catch (Exception $e) {
