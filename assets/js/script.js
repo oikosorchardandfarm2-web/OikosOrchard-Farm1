@@ -1154,10 +1154,8 @@ function submitBooking(event) {
         submitButton.textContent = 'Submitting...';
     }
 
-    // Send to server (use Netlify function or local PHP)
-    const endpoint = window.location.hostname === 'localhost' 
-      ? '/OikosOrchard-Farm1/api/send-booking.php'
-      : '/.netlify/functions/send-booking';
+    // Send to local PHP server
+    const endpoint = '/OikosOrchard-Farm1/api/send-booking.php';
 
     console.log('Sending booking to:', endpoint);
     console.log('Payload:', bookingData);
