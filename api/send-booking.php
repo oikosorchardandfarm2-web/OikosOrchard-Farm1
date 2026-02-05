@@ -73,7 +73,7 @@ try {
     // Send to Google Sheets (non-blocking - don't fail if it has issues)
     try {
         $sheetId = '1pWE72focDg7ZguylUJIaSysHZg1qxfQ_JiiT4Fk-26c';
-        $googleSheetUrl = 'https://script.google.com/macros/s/AKfycby_SVLSpAVC7S9JCbtpoVowpoJX4TWBdeOtvEj1elO3TuxReanmEAAavGaO8ShjlEcu1Q/exec';
+        $googleSheetUrl = 'https://script.google.com/macros/s/AKfycbwgTqy_jJGV02649VuPAi96dzaHOtwlc6gGmiWMxCYNe7I8jTE17b18C5qIt1etGRuXiw/exec';
         
         $payload = json_encode([
             'sheetId' => $sheetId,
@@ -130,16 +130,7 @@ try {
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
     exit;
 }
-
 ?>
-
-// Old functions have been removed to use PHPMailer via Gmail SMTP
-
-?>
-
-    // ============ EMAIL TO ADMIN ============
-    $adminSubject = "New Booking Request - " . $packageName;
-    $adminBody = "
     <html><head><style>
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
     .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 8px; }
