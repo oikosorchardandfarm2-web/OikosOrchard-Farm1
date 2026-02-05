@@ -64,9 +64,9 @@ exports.handler = async (event) => {
         console.log('=====================================');
 
         // Get email credentials from environment
-        const gmailUser = process.env.GMAIL_USER || 'oikosorchardandfarm2@gmail.com';
+        const gmailUser = process.env.GMAIL_USER;
         const gmailPassword = (process.env.GMAIL_PASSWORD || '').replace(/\s/g, '');
-        const adminEmail = process.env.ADMIN_EMAIL || 'oikosorchardandfarm2@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL;
 
         console.log('📧 Gmail configuration:');
         console.log('  Sending FROM:', gmailUser);
@@ -129,7 +129,7 @@ exports.handler = async (event) => {
                             <h3 style="color: #27ae60;">📞 Contact Information:</h3>
                             <ul>
                                 <li><strong>Phone:</strong> +63 917 777 0851</li>
-                                <li><strong>Email:</strong> oikosorchardandfarm2@gmail.com</li>
+                                <li><strong>Email:</strong> ${adminEmail}</li>
                                 <li><strong>Address:</strong> Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines</li>
                             </ul>
                             <p>Best regards,<br><strong>🌿 Oikos Orchard & Farm Team</strong></p>
