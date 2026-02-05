@@ -512,7 +512,7 @@ function submitGetStarted(e) {
     }
 
     // Send to Formspree
-    const formspreeEndpoint = 'https://formspree.io/f/mbdardep';
+    const formspreeEndpoint = 'https://formspree.io/f/xjgebgql';
 
     console.log('Sending Get Started to Formspree:', formspreeEndpoint);
     console.log('Payload:', data);
