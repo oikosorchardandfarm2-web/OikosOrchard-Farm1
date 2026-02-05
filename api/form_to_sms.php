@@ -1,7 +1,7 @@
 <?php
 /**
  * Contact Form Email Handler
- * Sends SMS notifications via email-to-SMS gateways using Gmail SMTP
+ * Sends SMS notifications via Email Gateway + SMTP
  */
 
 // Prevent any output before JSON
@@ -12,7 +12,8 @@ ini_set('display_errors', 0);
 // Load configuration
 require_once __DIR__ . '/../config/security.php';
 require_once __DIR__ . '/../config/gmail-config.php';
-require_once __DIR__ . '/send-sms.php';
+require_once __DIR__ . '/../PHPMailer/PHPMailer.php';
+require_once __DIR__ . '/../PHPMailer/Exception.php';
 
 header('Content-Type: application/json; charset=utf-8');
 ob_end_clean();
@@ -64,46 +65,82 @@ try {
 
     // SMS notification details
     $ownerPhone = "09948962820";
-    $phoneIntl = str_replace('0', '63', $ownerPhone);
-    $smsSubject = "Oikos Contact";
-    $smsBody = "New: $name | $body";
-    
-    $fromEmail = GMAIL_ADDRESS;
-    $fromName = "Oikos Orchard & Farm";
+    // Convert to international format: 09948962820 -> 639948962820
+    $phoneIntl = '63' . substr($ownerPhone, 1);
+    $smsMessage = "New: $name | $body";
 
-    // Try to send SMS via all three carriers (DITO, Globe, Smart)
-    $smsSent = false;
+    // Initialize PHPMailer for sending via Gmail SMTP
+    $mail = new PHPMailer(true);
     
-    // DITO (primary)
-    if (sendEmailViaSMTP($phoneIntl . "@text.ditophone.com", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
-        $smsSent = true;
-        error_log("SMS sent via DITO");
+    try {
+        // SMTP settings for Gmail
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->SMTPSecure = 'tls';
+        $mail->SMTPAuth = true;
+        $mail->Username = GMAIL_ADDRESS;
+        $mail->Password = GMAIL_APP_PASSWORD;
+        $mail->setFrom(GMAIL_ADDRESS, 'Oikos Orchard & Farm');
+
+        $smsSent = false;
+        
+        // Try sending SMS via email-to-SMS gateways
+        $smsGateways = array(
+            $phoneIntl . "@text.ditophone.com",      // DITO
+            $phoneIntl . "@mail.globelabs.com.ph",   // Globe
+            $phoneIntl . "@smspush.smart.com.ph"     // Smart
+        );
+        
+        foreach ($smsGateways as $gateway) {
+            $mail->clearAddresses();
+            $mail->addAddress($gateway);
+            $mail->Subject = "Oikos";
+            $mail->Body = $smsMessage;
+            $mail->isHTML = false;
+            
+            try {
+                if ($mail->send()) {
+                    $smsSent = true;
+                    error_log("SMS sent successfully to: $gateway");
+                    break; // Stop after first successful send
+                }
+            } catch (Exception $e) {
+                error_log("SMS failed to $gateway: " . $e->getMessage());
+                continue;
+            }
+        }
+
+        // Also send to admin email
+        $mail->clearAddresses();
+        $mail->addAddress(ADMIN_EMAIL);
+        $mail->Subject = "New Contact: $name";
+        $mail->Body = "New Contact Form Submission\n";
+        $mail->Body .= "============================\n\n";
+        $mail->Body .= "Name: " . $name . "\n";
+        $mail->Body .= "Email: " . $email . "\n";
+        $mail->Body .= "Phone: " . $phone . "\n";
+        $mail->Body .= "Message: " . $body . "\n\n";
+        $mail->Body .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
+        $mail->isHTML = false;
+        
+        try {
+            $mail->send();
+            error_log("Admin email sent successfully");
+        } catch (Exception $e) {
+            error_log("Admin email failed: " . $e->getMessage());
+        }
+
+    } catch (Exception $e) {
+        // PHPMailer Exception
+        http_response_code(500);
+        error_log("Mailer Exception: " . $e->getMessage());
+        echo json_encode([
+            'success' => false,
+            'message' => 'Server error. Please try again.'
+        ]);
+        exit;
     }
-    
-    // Globe (backup)
-    if (sendEmailViaSMTP($phoneIntl . "@mail.globelabs.com.ph", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
-        $smsSent = true;
-        error_log("SMS sent via Globe");
-    }
-    
-    // Smart (backup)
-    if (sendEmailViaSMTP($phoneIntl . "@smspush.smart.com.ph", $smsSubject, $smsBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD)) {
-        $smsSent = true;
-        error_log("SMS sent via Smart");
-    }
-    
-    // Also send to admin email
-    $adminEmail = ADMIN_EMAIL;
-    $adminSubject = "New Contact: $name";
-    $adminBody = "New Contact Form Submission\n";
-    $adminBody .= "============================\n\n";
-    $adminBody .= "Name: " . $name . "\n";
-    $adminBody .= "Email: " . $email . "\n";
-    $adminBody .= "Phone: " . $phone . "\n";
-    $adminBody .= "Message: " . $body . "\n\n";
-    $adminBody .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
-    
-    sendEmailViaSMTP($adminEmail, $adminSubject, $adminBody, $fromEmail, $fromName, GMAIL_ADDRESS, GMAIL_APP_PASSWORD);
 
     // Return success
     http_response_code(200);
@@ -113,6 +150,7 @@ try {
     ]);
 
 } catch (Exception $e) {
+    // General Exception
     http_response_code(500);
     error_log("Form Exception: " . $e->getMessage());
     echo json_encode([

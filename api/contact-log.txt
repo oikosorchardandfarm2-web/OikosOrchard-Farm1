@@ -13,3 +13,7 @@
 2026-02-05 02:08:53 | Name: Daisy Limpangog | Email: info@chpcebu.com | Phone: 09948962820 | Message: DAWDAW
 2026-02-05 02:12:49 | Name: Center for Healthcare Professions Cebu, Inc. | Email: info@chpcebu.com | Phone: 09948962820 | Message: DWAWDAWD
 2026-02-05 02:23:25 | Name: Daisy Limpangog | Email: info@chpcebu.com | Phone: 09948962820 | Message: dawdawdaw
+2026-02-05 02:36:22 | Name: Test User | Email: test@example.com | Phone: 09948962820 | Message: This is a test message from the form
+2026-02-05 02:38:21 | Name: Center for Healthcare Professions Cebu, Inc. | Email: info@chpcebu.com | Phone: 09948962820 | Message: dwadawdaw
+2026-02-05 02:39:45 | Name: Test User | Email: test@example.com | Phone: 09948962820 | Message: Test message with corrected phone number
+2026-02-05 02:40:54 | Name: Daisy Limpangog | Email: teacher@chpcebu.com | Phone: 09151520123 | Message: dawdawdaw

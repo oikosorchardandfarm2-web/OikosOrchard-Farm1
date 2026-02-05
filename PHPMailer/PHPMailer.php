@@ -51,11 +51,23 @@ class PHPMailer
         return true;
     }
 
+    public function setFrom($address, $name = '')
+    {
+        $this->From = $address;
+        $this->FromName = $name;
+    }
+
+    public function clearAddresses()
+    {
+        $this->to = [];
+    }
+
     public function send()
     {
         try {
+            // Connect to SMTP server (plain connection first)
             $this->connection = fsockopen(
-                'tls://' . $this->Host,
+                $this->Host,
                 $this->Port,
                 $errno,
                 $errstr,
@@ -63,30 +75,63 @@ class PHPMailer
             );
 
             if (!$this->connection) {
-                throw new Exception("Could not connect to SMTP host");
+                throw new Exception("Could not connect to SMTP host: $errstr");
             }
 
             // Read server response
-            $this->getResponse();
+            $response = $this->getResponse();
+            if (strpos($response, '220') === false) {
+                throw new Exception("Invalid server response: $response");
+            }
 
             // Send EHLO
             $this->sendCommand("EHLO localhost");
-            $this->getResponse();
-
-            // Start TLS (already connected via tls://)
-            $this->sendCommand("AUTH LOGIN");
-            $this->getResponse();
-
-            // Send username (base64 encoded)
-            $this->sendCommand(base64_encode($this->Username));
-            $this->getResponse();
-
-            // Send password (base64 encoded)
-            $this->sendCommand(base64_encode($this->Password));
             $response = $this->getResponse();
 
-            if (strpos($response, '235') === false) {
-                throw new Exception("SMTP authentication failed");
+            // Start TLS if configured
+            if ($this->SMTPSecure === 'tls') {
+                $this->sendCommand("STARTTLS");
+                $response = $this->getResponse();
+                
+                if (strpos($response, '220') === false) {
+                    throw new Exception("STARTTLS failed: $response");
+                }
+
+                // Enable TLS encryption on the connection
+                $cryptoMethod = STREAM_CRYPTO_METHOD_TLS_CLIENT;
+                if (!stream_socket_enable_crypto($this->connection, true, $cryptoMethod)) {
+                    throw new Exception("Failed to enable TLS encryption");
+                }
+
+                // Send EHLO again after STARTTLS
+                $this->sendCommand("EHLO localhost");
+                $response = $this->getResponse();
+            }
+
+            // Authenticate
+            if ($this->SMTPAuth) {
+                $this->sendCommand("AUTH LOGIN");
+                $response = $this->getResponse();
+                
+                if (strpos($response, '334') === false) {
+                    throw new Exception("AUTH LOGIN not supported: $response");
+                }
+
+                // Send username (base64 encoded)
+                $this->sendCommand(base64_encode($this->Username));
+                $response = $this->getResponse();
+                
+                if (strpos($response, '334') === false) {
+                    throw new Exception("Username rejected: $response");
+                }
+
+                // Send password (base64 encoded)
+                $this->sendCommand(base64_encode($this->Password));
+                $response = $this->getResponse();
+
+                if (strpos($response, '235') === false) {
+                    throw new Exception("Authentication failed: $response");
+                }
             }
 
             // Send MAIL FROM
