@@ -59,8 +59,13 @@ exports.handler = async (event) => {
         const gmailUser = process.env.GMAIL_USER;
         const gmailPassword = process.env.GMAIL_PASSWORD || process.env.GMAIL_APP_PASSWORD;
 
-        if (!gmailPassword) {
-            console.error('Gmail credentials not configured. Set GMAIL_USER and GMAIL_PASSWORD on Netlify.');
+        console.log('Email setup - gmailUser:', gmailUser ? 'SET' : 'NOT SET');
+        console.log('Email setup - gmailPassword:', gmailPassword ? 'SET' : 'NOT SET');
+        console.log('Email setup - process.env keys:', Object.keys(process.env).filter(k => k.includes('GMAIL') || k.includes('ADMIN')));
+
+        if (!gmailUser || !gmailPassword) {
+            console.error('Gmail credentials not configured. Check environment variables.');
+            console.error('Missing: ', { gmailUser: !gmailUser, gmailPassword: !gmailPassword });
             // For now, just log the request and return success
             console.log('Get Started Request:', { name, email, phone, interested });
             return {
