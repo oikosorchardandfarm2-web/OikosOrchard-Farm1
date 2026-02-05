@@ -80,14 +80,81 @@ try {
         // Send email to admin only
         $mail->addAddress(ADMIN_EMAIL);
         $mail->Subject = "New Contact: $name";
-        $mail->Body = "New Contact Form Submission\n";
-        $mail->Body .= "============================\n\n";
-        $mail->Body .= "Name: " . $name . "\n";
-        $mail->Body .= "Email: " . $email . "\n";
-        $mail->Body .= "Phone: " . $phone . "\n";
-        $mail->Body .= "Message: " . $body . "\n\n";
-        $mail->Body .= "Submitted: " . date('Y-m-d H:i:s') . "\n";
-        $mail->isHTML = false;
+        
+        // Create HTML email design
+        $mail->Body = <<<HTML
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f5f5f5; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+        .header { background: linear-gradient(135deg, #2d5016 0%, #4a7c2e 100%); color: white; padding: 30px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; }
+        .header p { margin: 5px 0 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 30px; }
+        .content h2 { color: #2d5016; font-size: 18px; margin-top: 0; }
+        .info-box { background-color: #f9f9f9; border-left: 4px solid #4a7c2e; padding: 15px; margin: 15px 0; }
+        .info-row { margin: 12px 0; }
+        .info-label { color: #666; font-weight: bold; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { color: #333; font-size: 14px; margin-top: 4px; word-break: break-word; }
+        .message-box { background-color: #fffacd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+        .timestamp { color: #999; font-size: 12px; text-align: right; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer { background-color: #f5f5f5; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Oikos Orchard & Farm</h1>
+            <p>New Contact Form Submission</p>
+        </div>
+        
+        <div class="content">
+            <h2>Contact Details</h2>
+            
+            <div class="info-box">
+                <div class="info-row">
+                    <div class="info-label">Name</div>
+                    <div class="info-value">$name</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-row">
+                    <div class="info-label">Email</div>
+                    <div class="info-value"><a href="mailto:$email" style="color: #4a7c2e; text-decoration: none;">$email</a></div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-row">
+                    <div class="info-label">Phone</div>
+                    <div class="info-value">$phone</div>
+                </div>
+            </div>
+            
+            <h2>Message</h2>
+            <div class="message-box">
+                <div class="info-value">$body</div>
+            </div>
+            
+            <div class="timestamp">
+                Submitted: <strong>" . date('M d, Y | g:i A') . "</strong>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2026 Oikos Orchard & Farm. All rights reserved.</p>
+            <p>This is an automated message from your contact form.</p>
+        </div>
+    </div>
+</body>
+</html>
+HTML;
+        
+        $mail->isHTML = true;
         
         try {
             $mail->send();
