@@ -533,25 +533,32 @@ Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines, Sibonga, Philippines, 
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="contactSmsForm">
+                    <form id="getStartedForm" netlify>
                         <div class="mb-3">
-                            <label for="sms-name" class="form-label">Full Name</label>
-                            <input type="text" id="sms-name" class="form-control" name="name" autocomplete="name" required>
+                            <label for="gs-name" class="form-label">Full Name</label>
+                            <input type="text" id="gs-name" class="form-control" name="name" autocomplete="name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="sms-email" class="form-label">Email Address</label>
-                            <input type="email" id="sms-email" class="form-control" name="email" autocomplete="email" required>
+                            <label for="gs-email" class="form-label">Email Address</label>
+                            <input type="email" id="gs-email" class="form-control" name="email" autocomplete="email" required>
                         </div>
                         <div class="mb-3">
-                            <label for="sms-phone" class="form-label">Phone Number</label>
-                            <input type="tel" id="sms-phone" class="form-control" name="phone" autocomplete="tel" required>
+                            <label for="gs-phone" class="form-label">Phone Number</label>
+                            <input type="tel" id="gs-phone" class="form-control" name="phone" autocomplete="tel" required>
                         </div>
                         <div class="mb-3">
-                            <label for="sms-body" class="form-label">Message (Max 160 characters)</label>
-                            <textarea id="sms-body" class="form-control" name="body" autocomplete="off" maxlength="160" required></textarea>
-                            <small class="text-muted">Character count: <span id="charCount">0</span>/160</small>
+                            <label for="gs-interested" class="form-label">What are you interested in?</label>
+                            <select id="gs-interested" class="form-control" name="interested" required>
+                                <option value="">-- Select an option --</option>
+                                <option value="Glamping">Glamping</option>
+                                <option value="Herbs & Fruits">Herbs & Fruits</option>
+                                <option value="Farm Products">Farm Products</option>
+                                <option value="Agricultural Consultation">Agricultural Consultation</option>
+                                <option value="Farm Tour">Farm Tour</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
-                        <button type="button" onclick="submitContactSms()" class="btn btn-success btn-lg w-100">Send Message via SMS</button>
+                        <button type="submit" class="btn btn-success btn-lg w-100">Get Started</button>
                     </form>
                 </div>
                 <div class="modal-footer">
