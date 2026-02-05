@@ -31,15 +31,15 @@ try {
         exit;
     }
 
-    // Sanitize inputs
-    $fullName = htmlspecialchars(trim($input['fullName']));
-    $email = htmlspecialchars(trim($input['email']));
-    $phone = htmlspecialchars(trim($input['phone']));
-    $checkinDate = htmlspecialchars(trim($input['checkinDate']));
-    $guests = htmlspecialchars(trim($input['guests']));
-    $packageName = htmlspecialchars(trim($input['packageName']));
-    $packagePrice = htmlspecialchars(trim($input['packagePrice'] ?? ''));
-    $specialRequests = htmlspecialchars(trim($input['specialRequests'] ?? ''));
+    // Sanitize inputs - use trim only, let json_encode handle escaping
+    $fullName = trim($input['fullName']);
+    $email = trim($input['email']);
+    $phone = trim($input['phone']);
+    $checkinDate = trim($input['checkinDate']);
+    $guests = trim($input['guests']);
+    $packageName = trim($input['packageName']);
+    $packagePrice = trim($input['packagePrice'] ?? '');
+    $specialRequests = trim($input['specialRequests'] ?? '');
 
     // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
