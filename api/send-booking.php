@@ -1,5 +1,7 @@
 <?php
 // Simple Booking Handler
+require_once __DIR__ . '/../config/security.php';
+
 header('Content-Type: application/json; charset=utf-8');
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
@@ -46,8 +48,8 @@ try {
         exit;
     }
 
-    // Gmail account
-    $gmailAddress = ADMIN_EMAIL;
+    // Admin email and timestamp
+    $adminEmail = ADMIN_EMAIL;
     $timestamp = date('Y-m-d H:i:s');
     
     // Create booking data array
@@ -65,7 +67,7 @@ try {
     ];
     
     // Save to bookings.json
-    $bookingsFile = __DIR__ . '/bookings.json';
+    $bookingsFile = __DIR__ . '/../bookings.json';
     $bookings = file_exists($bookingsFile) ? json_decode(file_get_contents($bookingsFile), true) ?? [] : [];
     $bookings[] = $bookingData;
     @file_put_contents($bookingsFile, json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
@@ -107,20 +109,168 @@ try {
         error_log("Google Sheets error: " . $e->getMessage());
     }
     
-    // Send simple email notification
-    try {
-        $subject = "New Booking Request - " . $packageName;
-        $body = "New Booking:\n\nName: $fullName\nEmail: $email\nPhone: $phone\nPackage: $packageName\nCheck-in: $checkinDate\nGuests: $guests\n\nSubmitted: $timestamp";
-        
-        @mail($gmailAddress, $subject, $body, "From: $email\r\nContent-Type: text/plain");
-    } catch (Exception $e) {
-        error_log("Email error: " . $e->getMessage());
-    }
+    // Send admin notification email
+    $adminSubject = "New Booking Request - " . $packageName;
+    $adminBody = "
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 5px; }
+            .header { background: linear-gradient(135deg, #4A3728 0%, #2F251A 100%); color: white; padding: 20px; border-radius: 5px 5px 0 0; text-align: center; }
+            .content { background: white; padding: 20px; }
+            .field { margin: 15px 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+            .label { font-weight: bold; color: #27ae60; }
+            .value { margin-top: 5px; }
+            .footer { background: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #666; }
+            .badge { display: inline-block; background: #27ae60; color: white; padding: 5px 10px; border-radius: 3px; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2>🌿 Oikos Orchard & Farm</h2>
+                <p>New Booking Request Received</p>
+            </div>
+            
+            <div class='content'>
+                <div class='field'>
+                    <div class='label'>Package</div>
+                    <div class='value'><span class='badge'>$packageName</span></div>
+                </div>
+                
+                <div class='field'>
+                    <div class='label'>Price</div>
+                    <div class='value'>₱$packagePrice</div>
+                </div>
+                
+                <div class='field'>
+                    <div class='label'>Guest Information</div>
+                    <div class='value'>
+                        <strong>Name:</strong> $fullName<br>
+                        <strong>Email:</strong> <a href='mailto:$email'>$email</a><br>
+                        <strong>Phone:</strong> <a href='tel:$phone'>$phone</a>
+                    </div>
+                </div>
+                
+                <div class='field'>
+                    <div class='label'>Booking Details</div>
+                    <div class='value'>
+                        <strong>Check-in Date:</strong> $checkinDate<br>
+                        <strong>Number of Guests:</strong> $guests
+                    </div>
+                </div>
+                
+                " . (!empty($specialRequests) ? "
+                <div class='field'>
+                    <div class='label'>Special Requests</div>
+                    <div class='value'>$specialRequests</div>
+                </div>
+                " : "") . "
+                
+                <div class='field'>
+                    <div class='label'>Submission Time</div>
+                    <div class='value'>$timestamp</div>
+                </div>
+            </div>
+            
+            <div class='footer'>
+                <p>This is an automated booking request from your website.</p>
+                <p>Please respond to the customer at <a href='mailto:$email'>$email</a> within 24 hours.</p>
+                <p>&copy; 2026 Oikos Orchard & Farm. All rights reserved.</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    ";
+    
+    $adminHeaders = "MIME-Version: 1.0\r\n";
+    $adminHeaders .= "Content-type: text/html; charset=UTF-8\r\n";
+    $adminHeaders .= "From: Website Booking System <noreply@oikosorchardandfarm.com>\r\n";
+    $adminHeaders .= "Reply-To: $email\r\n";
+    
+    @mail($adminEmail, $adminSubject, $adminBody, $adminHeaders);
+    
+    // Send customer confirmation email
+    $customerSubject = "✓ Booking Request Received - Oikos Orchard & Farm";
+    $customerBody = "
+    <html>
+    <head>
+        <style>
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            .container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9; border-radius: 5px; }
+            .header { background: linear-gradient(135deg, #4A3728 0%, #2F251A 100%); color: white; padding: 20px; border-radius: 5px 5px 0 0; text-align: center; }
+            .content { background: white; padding: 20px; line-height: 1.8; }
+            .info-box { background: #f0f9f4; padding: 15px; border-left: 4px solid #27ae60; margin: 20px 0; border-radius: 3px; }
+            .footer { background: #f0f0f0; padding: 15px; text-align: center; font-size: 12px; color: #666; border-radius: 0 0 5px 5px; }
+            .success { color: #27ae60; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h2>🌿 Oikos Orchard & Farm</h2>
+                <p>Your Booking Request is Confirmed</p>
+            </div>
+            
+            <div class='content'>
+                <p>Dear <strong>$fullName</strong>,</p>
+                
+                <p>Thank you for choosing <strong>Oikos Orchard & Farm</strong> for your glamping experience! We are thrilled to welcome you.</p>
+                
+                <div class='info-box'>
+                    <p><span class='success'>✓ Your Booking Details:</span></p>
+                    <p>
+                        <strong>📦 Package:</strong> $packageName<br>
+                        <strong>💰 Price:</strong> ₱$packagePrice<br>
+                        <strong>📅 Check-in Date:</strong> $checkinDate<br>
+                        <strong>👥 Number of Guests:</strong> $guests<br>
+                        <strong>⏰ Submitted:</strong> $timestamp
+                    </p>
+                </div>
+                
+                <p><strong>What Happens Next?</strong></p>
+                <p>Our team will review your booking request and <strong>contact you within 24 hours</strong> at <strong>$phone</strong> to:</p>
+                <ul>
+                    <li>Confirm your reservation</li>
+                    <li>Provide payment details</li>
+                    <li>Answer any questions</li>
+                    <li>Share pre-arrival information</li>
+                </ul>
+                
+                <p><strong>Need Immediate Assistance?</strong></p>
+                <p>
+                    📞 <strong>Phone:</strong> +63 (2) 1234 5678<br>
+                    📧 <strong>Email:</strong> contact@oikosorchardandfarm.com<br>
+                    🌐 <strong>Website:</strong> www.oikosorchardandfarm.com
+                </p>
+                
+                <p>We look forward to hosting an unforgettable experience for you and your group!</p>
+                
+                <p>Best regards,<br>
+                <strong>🌿 The Oikos Orchard & Farm Team</strong></p>
+            </div>
+            
+            <div class='footer'>
+                <p>&copy; 2026 Oikos Orchard & Farm. All rights reserved.</p>
+                <p><em>This is an automated confirmation email. Please do not reply to this email directly.</em></p>
+            </div>
+        </div>
+    </body>
+    </html>
+    ";
+    
+    $customerHeaders = "MIME-Version: 1.0\r\n";
+    $customerHeaders .= "Content-type: text/html; charset=UTF-8\r\n";
+    $customerHeaders .= "From: Oikos Orchard & Farm <" . $adminEmail . ">\r\n";
+    $customerHeaders .= "Reply-To: " . $adminEmail . "\r\n";
+    
+    @mail($email, $customerSubject, $customerBody, $customerHeaders);
     
     // Success response
     echo json_encode([
         'success' => true,
-        'message' => 'Booking submitted successfully! Our team will contact you within 24 hours.',
+        'message' => 'Booking submitted successfully! Check your email for confirmation.',
         'data' => $bookingData
     ]);
     exit;
@@ -128,8 +278,10 @@ try {
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    error_log("Booking error: " . $e->getMessage());
     exit;
 }
+?>
 ?>
     <html><head><style>
     body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
