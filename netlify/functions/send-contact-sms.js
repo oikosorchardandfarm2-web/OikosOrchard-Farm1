@@ -15,8 +15,13 @@ exports.handler = async (event, context) => {
     // Parse incoming data
     let data;
     if (typeof event.body === 'string') {
-      // Handle form data
-      data = querystring.parse(event.body);
+      // Try to parse as JSON first
+      try {
+        data = JSON.parse(event.body);
+      } catch (e) {
+        // Fallback to querystring for form data
+        data = querystring.parse(event.body);
+      }
     } else {
       data = event.body;
     }

@@ -576,12 +576,13 @@ function submitContactSms() {
         return;
     }
 
-    // Create FormData for form submission
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('phone', phone);
-    formData.append('body', body);
+    // Create JSON payload for form submission
+    const payload = {
+        name: name,
+        email: email,
+        phone: phone,
+        body: body
+    };
 
     // Show loading state
     const submitButton = form.querySelector('button[type="button"]');
@@ -596,7 +597,10 @@ function submitContactSms() {
 
     fetch(endpoint, {
         method: 'POST',
-        body: formData
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
     })
     .then(response => {
         if (!response.ok) {

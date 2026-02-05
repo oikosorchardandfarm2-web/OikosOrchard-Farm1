@@ -29,11 +29,22 @@ try {
         exit;
     }
 
-    // Get form data
-    $name = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : '';
-    $email = isset($_POST['email']) ? filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) : '';
-    $phone = isset($_POST['phone']) ? htmlspecialchars(trim($_POST['phone'])) : '';
-    $body = isset($_POST['body']) ? htmlspecialchars(trim($_POST['body'])) : '';
+    // Get form data - handle both JSON and form-encoded
+    $input = json_decode(file_get_contents('php://input'), true);
+    
+    if ($input) {
+        // JSON data
+        $name = isset($input['name']) ? htmlspecialchars(trim($input['name'])) : '';
+        $email = isset($input['email']) ? filter_var(trim($input['email']), FILTER_SANITIZE_EMAIL) : '';
+        $phone = isset($input['phone']) ? htmlspecialchars(trim($input['phone'])) : '';
+        $body = isset($input['body']) ? htmlspecialchars(trim($input['body'])) : '';
+    } else {
+        // Form-encoded data (fallback)
+        $name = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : '';
+        $email = isset($_POST['email']) ? filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL) : '';
+        $phone = isset($_POST['phone']) ? htmlspecialchars(trim($_POST['phone'])) : '';
+        $body = isset($_POST['body']) ? htmlspecialchars(trim($_POST['body'])) : '';
+    }
 
     // Validate required fields
     if (empty($name) || empty($email) || empty($phone) || empty($body)) {
