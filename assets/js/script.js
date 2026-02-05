@@ -589,8 +589,12 @@ function submitContactSms() {
     submitButton.disabled = true;
     submitButton.textContent = 'Sending...';
 
-    // Send to server
-    fetch(`/OikosOrchardandFarm/api/form_to_sms.php`, {
+    // Send to server (use Netlify function or local PHP)
+    const endpoint = window.location.hostname === 'localhost' 
+      ? '/OikosOrchardandFarm/api/form_to_sms.php'
+      : '/.netlify/functions/send-contact-sms';
+
+    fetch(endpoint, {
         method: 'POST',
         body: formData
     })
