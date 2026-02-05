@@ -82,17 +82,12 @@ exports.handler = async (event) => {
                 console.log('🔐 Creating Gmail transporter...');
                 const transporter = nodemailer.createTransport({
                     host: 'smtp.gmail.com',
-                    port: 587,
-                    secure: false,
+                    port: 465,
+                    secure: true,
                     auth: {
                         user: gmailUser,
                         pass: gmailPassword
-                    },
-                    tls: {
-                        rejectUnauthorized: true
-                    },
-                    connectionTimeout: 5000,
-                    socketTimeout: 5000
+                    }
                 });
 
                 // Verify connection
