@@ -608,7 +608,10 @@ function submitContactSms() {
     .then(response => {
         console.log('Response status:', response.status);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            return response.text().then(text => {
+                console.error('Error response body:', text);
+                throw new Error(`HTTP error! status: ${response.status} - ${text}`);
+            });
         }
         return response.text();
     })

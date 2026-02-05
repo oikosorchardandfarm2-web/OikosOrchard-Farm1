@@ -53,7 +53,16 @@ exports.handler = async (event, context) => {
 
     // Validate required fields
     if (!name || !email || !phone || !body) {
-      console.log('Validation failed - missing fields:', { name, email, phone, body });
+      console.log('Validation failed - missing fields:', { 
+        name: name || 'EMPTY', 
+        email: email || 'EMPTY', 
+        phone: phone || 'EMPTY', 
+        body: body || 'EMPTY',
+        nameLength: name.length,
+        emailLength: email.length,
+        phoneLength: phone.length,
+        bodyLength: body.length
+      });
       return {
         statusCode: 400,
         headers,
@@ -64,6 +73,7 @@ exports.handler = async (event, context) => {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      console.log('Email validation failed:', { email, matches: emailRegex.test(email) });
       return {
         statusCode: 400,
         headers,
@@ -77,16 +87,6 @@ exports.handler = async (event, context) => {
         statusCode: 400,
         headers,
         body: JSON.stringify({ success: false, message: 'Message exceeds 160 character limit' })
-      };
-    }
-
-    // Validate phone format (basic validation)
-    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-    if (!phoneRegex.test(phone)) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ success: false, message: 'Invalid phone number format' })
       };
     }
 
