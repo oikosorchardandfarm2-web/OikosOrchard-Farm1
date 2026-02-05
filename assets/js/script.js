@@ -594,17 +594,29 @@ function submitContactSms() {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(responseData => {
-        if (responseData.success) {
-            showAlert(responseData.message || 'Message sent successfully!', 'success');
-            form.reset();
-            document.getElementById('charCount').textContent = '0';
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
-            if (modal) modal.hide();
-        } else {
-            showAlert('Error: ' + (responseData.message || 'Failed to send message'), 'danger');
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(text => {
+        // Try to parse as JSON
+        try {
+            const responseData = JSON.parse(text);
+            if (responseData.success) {
+                showAlert(responseData.message || 'Message sent successfully!', 'success');
+                form.reset();
+                document.getElementById('charCount').textContent = '0';
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+                if (modal) modal.hide();
+            } else {
+                showAlert('Error: ' + (responseData.message || 'Failed to send message'), 'danger');
+            }
+        } catch (e) {
+            console.error('Failed to parse response:', text);
+            showAlert('Error: Invalid server response', 'danger');
         }
     })
     .catch(error => {
