@@ -33,8 +33,16 @@ exports.handler = async (event, context) => {
     const data = JSON.parse(event.body);
     console.log('Received booking data:', data);
 
+    // Safely extract and trim values, ensuring they're strings
+    const fullName = String(data.fullName || '').trim();
+    const email = String(data.email || '').trim();
+    const phone = String(data.phone || '').trim();
+    const checkinDate = String(data.checkinDate || '').trim();
+    const guests = String(data.guests || '').trim();
+    const packageName = String(data.packageName || '').trim();
+
     // Validate required fields
-    if (!data.fullName || !data.email || !data.phone || !data.checkinDate || !data.guests || !data.packageName) {
+    if (!fullName || !email || !phone || !checkinDate || !guests || !packageName) {
       return {
         statusCode: 400,
         headers,
@@ -44,7 +52,7 @@ exports.handler = async (event, context) => {
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
+    if (!emailRegex.test(email)) {
       return {
         statusCode: 400,
         headers,
@@ -54,14 +62,14 @@ exports.handler = async (event, context) => {
 
     // Prepare booking data
     const bookingData = {
-      fullName: data.fullName,
-      email: data.email,
-      phone: data.phone,
-      checkinDate: data.checkinDate,
-      guests: data.guests,
-      packageName: data.packageName,
-      packagePrice: data.packagePrice || '',
-      specialRequests: data.specialRequests || '',
+      fullName: fullName,
+      email: email,
+      phone: phone,
+      checkinDate: checkinDate,
+      guests: guests,
+      packageName: packageName,
+      packagePrice: String(data.packagePrice || '').trim(),
+      specialRequests: String(data.specialRequests || '').trim(),
       timestamp: new Date().toLocaleString(),
       bookingId: 'booking_' + Date.now()
     };

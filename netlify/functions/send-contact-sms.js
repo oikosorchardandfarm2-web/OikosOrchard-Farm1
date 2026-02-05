@@ -45,10 +45,11 @@ exports.handler = async (event, context) => {
 
     console.log('Received contact SMS data:', data);
 
-    const name = data.name ? data.name.trim() : '';
-    const email = data.email ? data.email.trim() : '';
-    const phone = data.phone ? data.phone.trim() : '';
-    const body = data.body ? data.body.trim() : '';
+    // Safely extract and trim values, ensuring they're strings
+    const name = String(data.name || '').trim();
+    const email = String(data.email || '').trim();
+    const phone = String(data.phone || '').trim();
+    const body = String(data.body || '').trim();
 
     // Validate required fields
     if (!name || !email || !phone || !body) {

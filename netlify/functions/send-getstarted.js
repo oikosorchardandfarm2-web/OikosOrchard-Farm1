@@ -30,8 +30,14 @@ exports.handler = async (event) => {
     try {
         const data = JSON.parse(event.body);
 
+        // Safely extract and trim values, ensuring they're strings
+        const name = String(data.name || '').trim();
+        const email = String(data.email || '').trim();
+        const phone = String(data.phone || '').trim();
+        const interested = String(data.interested || '').trim();
+
         // Validate required fields
-        if (!data.name || !data.email || !data.phone || !data.interested) {
+        if (!name || !email || !phone || !interested) {
             return {
                 statusCode: 400,
                 headers,
@@ -41,7 +47,7 @@ exports.handler = async (event) => {
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(data.email)) {
+        if (!emailRegex.test(email)) {
             return {
                 statusCode: 400,
                 headers,
@@ -88,19 +94,19 @@ exports.handler = async (event) => {
                         <div class='content'>
                             <div class='field'>
                                 <span class='label'>Name:</span>
-                                <span class='value'>${data.name}</span>
+                                <span class='value'>${name}</span>
                             </div>
                             <div class='field'>
                                 <span class='label'>Email:</span>
-                                <span class='value'>${data.email}</span>
+                                <span class='value'>${email}</span>
                             </div>
                             <div class='field'>
                                 <span class='label'>Phone:</span>
-                                <span class='value'>${data.phone}</span>
+                                <span class='value'>${phone}</span>
                             </div>
                             <div class='field'>
                                 <span class='label'>Interested In:</span>
-                                <span class='value'>${data.interested}</span>
+                                <span class='value'>${interested}</span>
                             </div>
                             <div class='field'>
                                 <span class='label'>Submitted:</span>
@@ -119,7 +125,7 @@ exports.handler = async (event) => {
         // Email to user
         const userMailOptions = {
             from: process.env.GMAIL_USER,
-            to: data.email,
+            to: email,
             subject: 'Thank You for Getting Started - Oikos Orchard & Farm',
             html: `
                 <html>
@@ -138,12 +144,12 @@ exports.handler = async (event) => {
                             <h2>🌱 Welcome to Oikos Orchard & Farm!</h2>
                         </div>
                         <div class='content'>
-                            <p>Dear <strong>${data.name}</strong>,</p>
+                            <p>Dear <strong>${name}</strong>,</p>
                             <p>Thank you for your interest in <strong>Oikos Orchard & Farm</strong>! We have received your request and will contact you shortly.</p>
                             
                             <h3>Your Request Details:</h3>
                             <ul>
-                                <li><strong>Interested In:</strong> ${data.interested}</li>
+                                <li><strong>Interested In:</strong> ${interested}</li>
                                 <li><strong>Submitted:</strong> ${currentDate}</li>
                             </ul>
 
