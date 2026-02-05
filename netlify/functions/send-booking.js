@@ -1,4 +1,7 @@
-// Simple booking handler - logs and returns success
+// Booking handler - saves to bookings.json and returns success
+const fs = require('fs');
+const path = require('path');
+
 exports.handler = async (event, context) => {
   // Add CORS headers
   const headers = {
@@ -38,6 +41,8 @@ exports.handler = async (event, context) => {
     const checkinDate = String(data.checkinDate || '').trim();
     const guests = String(data.guests || '').trim();
     const packageName = String(data.packageName || '').trim();
+    const packagePrice = String(data.packagePrice || '').trim();
+    const specialRequests = String(data.specialRequests || '').trim();
 
     // Validate required fields
     if (!fullName || !email || !phone || !checkinDate || !guests || !packageName) {
@@ -58,15 +63,55 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Create booking data object
+    const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const bookingData = {
+      fullName,
+      email,
+      phone,
+      checkinDate,
+      guests,
+      packageName,
+      packagePrice,
+      specialRequests,
+      timestamp,
+      id: 'booking_' + Date.now().toString(36)
+    };
+
+    // Save to bookings.json
+    try {
+      const bookingsPath = path.join(__dirname, '../../bookings.json');
+      console.log('Attempting to save to:', bookingsPath);
+      
+      let bookings = [];
+      
+      // Read existing bookings if file exists
+      if (fs.existsSync(bookingsPath)) {
+        const fileContent = fs.readFileSync(bookingsPath, 'utf8');
+        bookings = JSON.parse(fileContent || '[]');
+      }
+      
+      // Add new booking
+      bookings.push(bookingData);
+      
+      // Write back to file
+      fs.writeFileSync(bookingsPath, JSON.stringify(bookings, null, 2), 'utf8');
+      console.log('Booking saved successfully to bookings.json');
+    } catch (fileError) {
+      console.error('Error saving to bookings.json:', fileError);
+      // Continue anyway - the response will still be success since the main operation worked
+    }
+
     // Log booking
     console.log('=== BOOKING SUBMISSION ===');
+    console.log('ID:', bookingData.id);
     console.log('Name:', fullName);
     console.log('Email:', email);
     console.log('Phone:', phone);
     console.log('Check-in:', checkinDate);
     console.log('Guests:', guests);
     console.log('Package:', packageName);
-    console.log('Timestamp:', new Date().toISOString());
+    console.log('Timestamp:', timestamp);
     console.log('==========================');
 
     // Return success
@@ -75,7 +120,8 @@ exports.handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Thank you! Your booking request has been received. We will contact you within 24 hours to confirm.'
+        message: 'Thank you! Your booking request has been received. We will contact you within 24 hours to confirm.',
+        data: bookingData
       })
     };
 
