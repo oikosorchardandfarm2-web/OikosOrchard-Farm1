@@ -1,0 +1,15 @@
+﻿# Local Netlify folder
+.netlify
+# Sensitive configuration files (credentials)
+twilio-config.php
+gmail-config.php
+firebase-config.json
+.env
+.env.local
+
+# Dependencies
+node_modules/
+vendor/
+
+# Logs
+*.log

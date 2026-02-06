@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQs - Oikos Orchard & Farm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <style>
+        .faq-header {
+            background: linear-gradient(135deg, #4A3728 0%, #2F251A 100%);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .faq-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .faq-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .faq-category {
+            margin-bottom: 50px;
+        }
+
+        .faq-category-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2F251A;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-green);
+        }
+
+        .accordion {
+            gap: 20px;
+        }
+
+        .accordion-item {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-item:hover {
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.1);
+        }
+
+        .accordion-button {
+            font-weight: 600;
+            color: #2F251A;
+            background-color: #f8f9fa;
+            padding: 20px;
+            font-size: 1rem;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: var(--primary-green);
+            color: white;
+            box-shadow: none;
+        }
+
+        .accordion-button:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.25rem rgba(39, 174, 96, 0.25);
+        }
+
+        .accordion-body {
+            padding: 20px;
+            color: #555;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .accordion-body a {
+            color: var(--primary-green);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .accordion-body a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-cta {
+            background: linear-gradient(135deg, #27AE60 0%, #1E8449 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .contact-cta h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-cta p {
+            margin-bottom: 25px;
+            font-size: 1.05rem;
+        }
+
+        .contact-cta .btn {
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/697874c54a0f82197e6232c8/1jfv8g8pt';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="./index.html">
+                <img src="assets/images/OikosOF.png" alt="Oikos Logo" class="navbar-logo me-2">Oikos Orchard & Farm
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="./index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.html#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.html#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.html#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./Offers.html">Offers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./FAQs.html">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- FAQs Header -->
+    <section class="faq-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our farm, services, and bookings</p>
+        </div>
+    </section>
+
+    <!-- FAQs Content -->
+    <section class="faq-container">
+        <!-- About Us FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-info-circle me-3" style="color: var(--primary-green);"></i>About Oikos</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What is Oikos Orchard & Farm?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Oikos Orchard & Farm is a sustainable agritourism destination located in the highlands of South Cebu, Philippines, at 300 meters above sea level. We specialize in producing organic fruits, vegetables, Philippine native tree seedlings, and raising native animals. We also offer glamping accommodations for nature lovers and adventurous travelers seeking an authentic farm experience.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Where is Oikos located?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We are located at Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines. Nestled at 300 meters above sea level, our farm offers breathtaking views of Bohol Island and is easily accessible from major towns in South Cebu.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            When was Oikos established?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Oikos Orchard & Farm was established in 2021 by Bernard Restiﬁcar and Myrma Restiﬁcar. Our mission is to be the first tourism park of fruit-bearing and Philippine native trees in the Philippines, promoting sustainable agriculture and ecotourism.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            What does "Oikos" mean?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            "Oikos" is an ancient Greek term that refers to three related but distinct concepts: the family, the family's property, and the house. The word is infused with great meaning, hope, and promise. Our name reflects our commitment to creating a "home away from home" for our visitors.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visiting & Bookings FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-calendar me-3" style="color: var(--primary-green);"></i>Visiting & Bookings</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            How do I book a visit or accommodation?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            You can book through our website by filling out the booking form or contacting us directly. We recommend booking in advance, especially for weekend visits and glamping accommodations. <a href="./Offers.html">View our packages and rates here</a>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            What are your operating hours?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Operating hours vary by season and day. For specific visiting hours and to arrange group visits, please contact us directly. We're typically open for day tours and overnight glamping stays. Contact our team for detailed scheduling information.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            Can I make group bookings?
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Absolutely! We welcome group bookings for schools, corporate teams, and family gatherings. Group visits can include guided farm tours, fruit picking, team-building activities, and meals prepared from our farm produce. Please contact us for group rates and customized itineraries.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                            What is included in the glamping experience?
+                        </button>
+                    </h2>
+                    <div id="faq8" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Our glamping accommodations offer comfortable yet nature-immersed experiences. Amenities typically include comfortable beds, access to farm facilities, guided farm tours, and meals featuring our organic produce. Specific inclusions depend on your chosen package. <a href="./Offers.html">Check our offers page for detailed package information</a>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                            Is there a cancellation policy?
+                        </button>
+                    </h2>
+                    <div id="faq9" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes, we have a flexible cancellation policy. Cancellations made 7 days or more before your booking date are eligible for a full refund. For cancellations made within 7 days, 50% of the booking amount may be retained. Please contact us for specific details regarding your booking.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products & Produce FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-apple-alt me-3" style="color: var(--primary-green);"></i>Products & Produce</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq10">
+                            Are your products organic and certified?
+                        </button>
+                    </h2>
+                    <div id="faq10" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! All of our products are 100% organic certified. We follow sustainable farming practices and do not use synthetic pesticides or chemical fertilizers. Our commitment to organic agriculture ensures the highest quality produce for our visitors and customers.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq11">
+                            What types of fruits and vegetables do you grow?
+                        </button>
+                    </h2>
+                    <div id="faq11" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We grow a diverse range of tropical and temperate fruits, vegetables, and Philippine native trees. Our seasonal produce changes throughout the year. Contact us for information about what's currently available, or visit the farm to see our full inventory of fresh and exotic fruits.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq12">
+                            Can I purchase products directly from the farm?
+                        </button>
+                    </h2>
+                    <div id="faq12" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! We sell fresh produce directly from our farm. Visitors can purchase fruits, vegetables, and seedlings during their visit. For bulk orders or wholesale inquiries, please contact us directly.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq13">
+                            Do you offer fruit picking activities?
+                        </button>
+                    </h2>
+                    <div id="faq13" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Absolutely! Fruit picking is one of our most popular activities. Guests can participate in seasonal fruit harvesting, learning from our experienced farmers about the cultivation process. The fruits you pick can be taken home or used in farm-prepared meals.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq14">
+                            Do you have tree seedlings for sale?
+                        </button>
+                    </h2>
+                    <div id="faq14" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! We grow and sell Philippine native tree seedlings of various kinds, all propagated and nurtured in our own nursery. These are ideal for reforestation projects, landscaping, and environmental initiatives. Contact us for available varieties and pricing.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activities & Experiences FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-leaf me-3" style="color: var(--primary-green);"></i>Activities & Experiences</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq15">
+                            What activities are available at the farm?
+                        </button>
+                    </h2>
+                    <div id="faq15" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We offer a variety of activities including guided farm tours, fruit picking, animal interactions (goats, chickens, hogs), vegetable harvesting, tree seedling selection, photography, and nature walks. Our activities are designed to provide educational and enriching experiences for all ages.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq16">
+                            Are the activities family-friendly?
+                        </button>
+                    </h2>
+                    <div id="faq16" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! Oikos is designed as a family destination. We have activities suitable for children, teenagers, and adults. From fruit picking to animal feeding and educational farm tours, there's something for everyone. We can customize experiences based on the age and interests of your group.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq17">
+                            Do you offer educational tours for schools?
+                        </button>
+                    </h2>
+                    <div id="faq17" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Absolutely! Educational tours are one of our specialties. We offer curriculum-aligned experiences teaching students about sustainable agriculture, biodiversity, environmental conservation, and farm-to-table concepts. School groups receive special rates and customized programs.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq18">
+                            What are the views like from the farm?
+                        </button>
+                    </h2>
+                    <div id="faq18" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Situated at 300 meters above sea level, our farm offers breathtaking panoramic views of Bohol Island and the surrounding highlands of South Cebu. It's an ideal location for photography, sunset watching, and enjoying natural beauty while learning about sustainable farming.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Amenities & Facilities FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-home me-3" style="color: var(--primary-green);"></i>Amenities & Facilities</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq19">
+                            What amenities are available at the farm?
+                        </button>
+                    </h2>
+                    <div id="faq19" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We provide comfortable amenities including restroom facilities, dining areas, shaded rest areas, and farm structures. For overnight guests, glamping accommodations are available with comfortable beds and access to our facilities. Specific amenities depend on your package selection.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq20">
+                            Do you have food and beverage services?
+                        </button>
+                    </h2>
+                    <div id="faq20" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! We offer farm-to-table dining experiences featuring our organic produce. Meals are prepared fresh and showcase the seasonal harvest from our farm. Special dietary requirements can be accommodated with advance notice. Some packages include meals, while others offer dining options for an additional fee.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq21">
+                            Is the farm accessible for people with mobility challenges?
+                        </button>
+                    </h2>
+                    <div id="faq21" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We strive to make our farm accessible to all visitors. While some areas involve natural terrain, we have designated paths and rest areas. Please contact us in advance if you have specific accessibility needs, and we'll do our best to accommodate you.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq22">
+                            Is there parking available?
+                        </button>
+                    </h2>
+                    <div id="faq22" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes, we have adequate parking facilities for our guests. Parking is free and available on a first-come, first-served basis. For large group visits, please notify us in advance so we can ensure sufficient parking space.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq23">
+                            What is the weather like? What should I bring?
+                        </button>
+                    </h2>
+                    <div id="faq23" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            As a highland farm at 300m elevation, the climate is cooler and fresher than lowland areas. We recommend bringing sunscreen, comfortable walking shoes, light clothing, and a light jacket for cool evenings. During rainy season, bring an umbrella or rain jacket. Don't forget a camera to capture the beautiful views and memories!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agricultural Services FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-handshake me-3" style="color: var(--primary-green);"></i>Agricultural Services</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq24">
+                            Do you offer agricultural consultation?
+                        </button>
+                    </h2>
+                    <div id="faq24" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! Our expert team provides agricultural consultation for farms and individuals interested in sustainable farming practices. We offer guidance on organic farming, crop selection, soil management, and pest control using natural methods. Contact us to arrange a consultation.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq25">
+                            Can I learn sustainable farming techniques?
+                        </button>
+                    </h2>
+                    <div id="faq25" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Absolutely! Our farm serves as a living classroom. We teach hands-on sustainable agriculture practices including organic soil management, natural pest control, water conservation, and biodiversity enhancement. Workshops and training sessions can be arranged for individuals or groups.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq26">
+                            Do you sell seedlings in bulk for reforestation?
+                        </button>
+                    </h2>
+                    <div id="faq26" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! We supply Philippine native tree seedlings in bulk for reforestation projects, corporate environmental initiatives, and community development. We can discuss custom propagation and delivery arrangements. Contact us for wholesale pricing and specific tree species availability.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact & Support FAQs -->
+        <div class="faq-category">
+            <h2 class="faq-category-title"><i class="fas fa-phone me-3" style="color: var(--primary-green);"></i>Contact & Support</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq27">
+                            How can I contact Oikos?
+                        </button>
+                    </h2>
+                    <div id="faq27" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            You can reach us through multiple channels: visit our website and fill out the contact form, call us directly, send an SMS, or visit us in person at Vegetable Highway, Upper Bae, Sibonga, Cebu. We also have a 24/7 customer support chat available on our website.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq28">
+                            What is your customer support availability?
+                        </button>
+                    </h2>
+                    <div id="faq28" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We offer 24/7 customer support to assist with bookings, inquiries, and special requests. Our support team is available via phone, SMS, email, and live chat. We typically respond to inquiries within a few hours during business hours.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq29">
+                            How do I provide feedback or report an issue?
+                        </button>
+                    </h2>
+                    <div id="faq29" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            We value your feedback! You can share comments, suggestions, or report issues through our contact form on the website, via email, or directly to our support team. All feedback is reviewed and helps us improve our services.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq30">
+                            Do you have social media accounts?
+                        </button>
+                    </h2>
+                    <div id="faq30" class="accordion-collapse collapse" data-bs-parent=".accordion">
+                        <div class="accordion-body">
+                            Yes! Follow us on social media to stay updated on seasonal harvests, special offers, events, and farm activities. You can connect with us on Facebook, Instagram, and other platforms for the latest news and beautiful farm photos.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="contact-cta">
+            <h3>Didn't find your answer?</h3>
+            <p>We're here to help! Contact our team directly for any questions or special requests.</p>
+            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#contactModal">Get in Touch</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Oikos Orchard & Farm</h5>
+                    <p class="small text-muted">Vegetable Highway, Upper Bae, Sibonga, Cebu, Philippines</p>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled small">
+                        <li><a href="./index.html" class="text-muted text-decoration-none">Home</a></li>
+                        <li><a href="./Offers.html" class="text-muted text-decoration-none">Offers</a></li>
+                        <li><a href="./FAQs.html" class="text-muted text-decoration-none">FAQs</a></li>
+                        <li><a href="#contact" class="text-muted text-decoration-none">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>24/7 Support</h5>
+                    <p class="small text-muted">Have questions? Our support team is always available to assist.</p>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center">
+                <p class="small text-muted mb-0">&copy; 2024 Oikos Orchard & Farm. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Contact Modal (referenced from index.html) -->
+    <div class="modal fade" id="contactModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Get in Touch with Oikos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Contact us for bookings, inquiries, and special requests. We're here to help!</p>
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

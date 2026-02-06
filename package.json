@@ -1,0 +1,23 @@
+{
+  "name": "oikosorchardandfarm",
+  "version": "1.0.0",
+  "description": "A modern, fully responsive website landing page for an organic farming business built with HTML5, Bootstrap 5, and JavaScript.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daisylimpangog/OikosOrchard-Farm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Daisylimpangog/OikosOrchard-Farm/issues"
+  },
+  "homepage": "https://github.com/Daisylimpangog/OikosOrchard-Farm#readme",
+  "dependencies": {
+    "nodemailer": "^7.0.13"
+  }
+}
