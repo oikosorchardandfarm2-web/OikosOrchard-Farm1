@@ -985,6 +985,11 @@
                                         document.body.classList.remove('modal-open');
                                         // Remove any inline overflow styles
                                         document.body.style.overflow = '';
+                                        
+                                        // Reload page after modal closes
+                                        setTimeout(() => {
+                                            location.reload();
+                                        }, 1000);
                                     }, { once: true });
                                     modal.hide();
                                 }
