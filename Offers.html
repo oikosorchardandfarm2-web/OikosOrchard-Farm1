@@ -807,7 +807,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" id="submitBookingBtn" onclick="submitBooking()">Submit Booking</button>
+                    <button type="button" class="btn btn-success" id="submitBookingBtn" onclick="return submitBooking(event);">Submit Booking</button>
                 </div>
             </div>
         </div>
@@ -868,7 +868,13 @@
             document.getElementById('packagePrice').value = '₱' + price.toLocaleString();
         }
 
-        function submitBooking() {
+        function submitBooking(event) {
+            // Prevent default form submission and page reload
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
             const packageName = document.getElementById('packageName').value;
             const packagePrice = document.getElementById('packagePrice').value;
             
@@ -1002,6 +1008,8 @@
                     submitBtn.disabled = false;
                 }
             });
+            
+            return false; // Prevent any form submission or page reload
         }
 
         function showAlert(message, type = 'info') {
