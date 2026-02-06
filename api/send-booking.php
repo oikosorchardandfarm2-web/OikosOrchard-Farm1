@@ -1,38 +1,41 @@
 <?php
-// Simple Booking Handler
+// Clean Booking Handler
 header('Content-Type: application/json; charset=utf-8');
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
-// Include security config
+// Include security and optional gmail config
 require_once __DIR__ . '/../config/security.php';
+if (file_exists(__DIR__ . '/../config/gmail-config.php')) {
+    require_once __DIR__ . '/../config/gmail-config.php';
+}
 
 try {
-    // Check if request is POST
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
         echo json_encode(['success' => false, 'message' => 'Method not allowed']);
         exit;
     }
 
-    // Get JSON data from request
-    $input = json_decode(file_get_contents('php://input'), true);
-    
-    if (!$input) {
+    $raw = file_get_contents('php://input');
+    $input = json_decode($raw, true);
+    if (!is_array($input)) {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Invalid JSON data received']);
         exit;
     }
 
-    // Validate required fields
-    if (empty($input['fullName']) || empty($input['email']) || empty($input['phone']) || 
-        empty($input['checkinDate']) || empty($input['guests']) || empty($input['packageName'])) {
-        http_response_code(400);
-        echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
-        exit;
+    // Required fields
+    $required = ['fullName','email','phone','checkinDate','guests','packageName'];
+    foreach ($required as $f) {
+        if (empty($input[$f])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Please fill all required fields']);
+            exit;
+        }
     }
 
-    // Sanitize inputs
+    // Sanitize
     $fullName = htmlspecialchars(trim($input['fullName']));
     $email = htmlspecialchars(trim($input['email']));
     $phone = htmlspecialchars(trim($input['phone']));
@@ -42,19 +45,15 @@ try {
     $packagePrice = htmlspecialchars(trim($input['packagePrice'] ?? ''));
     $specialRequests = htmlspecialchars(trim($input['specialRequests'] ?? ''));
 
-    // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         http_response_code(400);
         echo json_encode(['success' => false, 'message' => 'Invalid email address']);
         exit;
     }
 
-    // Gmail account
-    $gmailAddress = ADMIN_EMAIL;
     $timestamp = date('Y-m-d H:i:s');
-    
-    // Create booking data array
     $bookingData = [
+        'id' => uniqid('booking_'),
         'fullName' => $fullName,
         'email' => $email,
         'phone' => $phone,
@@ -63,21 +62,23 @@ try {
         'packageName' => $packageName,
         'packagePrice' => $packagePrice,
         'specialRequests' => $specialRequests,
-        'timestamp' => $timestamp,
-        'id' => uniqid('booking_')
+        'timestamp' => $timestamp
     ];
-    
-    // Save to bookings.json
+
+    // Save booking locally
     $bookingsFile = __DIR__ . '/bookings.json';
-    $bookings = file_exists($bookingsFile) ? json_decode(file_get_contents($bookingsFile), true) ?? [] : [];
+    $bookings = [];
+    if (file_exists($bookingsFile)) {
+        $contents = @file_get_contents($bookingsFile);
+        $bookings = json_decode($contents, true) ?? [];
+    }
     $bookings[] = $bookingData;
     @file_put_contents($bookingsFile, json_encode($bookings, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-    
-    // Send to Google Sheets (non-blocking - don't fail if it has issues)
+
+    // Send to Google Sheets (best-effort)
     try {
         $sheetId = '1pWE72focDg7ZguylUJIaSysHZg1qxfQ_JiiT4Fk-26c';
         $googleSheetUrl = 'https://script.google.com/macros/s/AKfycby_SVLSpAVC7S9JCbtpoVowpoJX4TWBdeOtvEj1elO3TuxReanmEAAavGaO8ShjlEcu1Q/exec';
-        
         $payload = json_encode([
             'sheetId' => $sheetId,
             'bookingId' => $bookingData['id'],
@@ -91,7 +92,7 @@ try {
             'specialRequests' => $bookingData['specialRequests'],
             'timestamp' => $bookingData['timestamp']
         ]);
-        
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $googleSheetUrl);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -100,40 +101,30 @@ try {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        
-        $response = curl_exec($ch);
+        $resp = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-        
-        error_log("Google Sheets response: HTTP $httpCode - $response");
+        error_log("Google Sheets response: HTTP $httpCode - $resp");
     } catch (Exception $e) {
-        error_log("Google Sheets error: " . $e->getMessage());
+        error_log('Google Sheets error: ' . $e->getMessage());
     }
-    
-    // Send simple email notification
-    try {
+
+    // Send simple admin email (best-effort)
+    if (defined('ADMIN_EMAIL') && ADMIN_EMAIL) {
         $subject = "New Booking Request - " . $packageName;
-        $body = "New Booking:\n\nName: $fullName\nEmail: $email\nPhone: $phone\nPackage: $packageName\nCheck-in: $checkinDate\nGuests: $guests\n\nSubmitted: $timestamp";
-        
-        @mail($gmailAddress, $subject, $body, "From: $email\r\nContent-Type: text/plain");
-    } catch (Exception $e) {
-        error_log("Email error: " . $e->getMessage());
+        $body = "New booking:\n\nName: $fullName\nEmail: $email\nPhone: $phone\nPackage: $packageName\nCheck-in: $checkinDate\nGuests: $guests\nSubmitted: $timestamp";
+        @mail(ADMIN_EMAIL, $subject, $body, "From: $email\r\nContent-Type: text/plain");
     }
-    
-    // Success response
-    echo json_encode([
-        'success' => true,
-        'message' => 'Booking submitted successfully! Our team will contact you within 24 hours.',
-        'data' => $bookingData
-    ]);
+
+    echo json_encode(['success' => true, 'message' => 'Booking submitted successfully', 'data' => $bookingData]);
     exit;
-    
+
 } catch (Exception $e) {
+    error_log('send-booking.php exception: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'Server error']);
     exit;
 }
-
 ?>
 
 // Old functions have been removed to use PHPMailer via Gmail SMTP
