@@ -604,7 +604,7 @@ function submitContactSms() {
 
     // Send to server (use Netlify function or local PHP)
     const endpoint = window.location.hostname === 'localhost' 
-      ? '/OikosOrchardandFarm/api/form_to_sms.php'
+      ? '/OikosOrchard-Farm1/api/form_to_sms.php'
       : '/.netlify/functions/send-contact-sms';
 
     console.log('Sending SMS to:', endpoint);
@@ -1155,7 +1155,7 @@ function submitBooking(event) {
     }
 
     // Send to server
-    fetch('/api/send-booking.php', {
+    fetch('/OikosOrchard-Farm1/api/send-booking.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
