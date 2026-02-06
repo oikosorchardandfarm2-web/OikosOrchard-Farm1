@@ -741,7 +741,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" onclick="submitProductOrder()">Submit Order</button>
+                    <button type="button" class="btn btn-success" id="submitProductOrderBtn" onclick="submitProductOrder()">Submit Order</button>
                 </div>
             </div>
         </div>
@@ -807,7 +807,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success" onclick="submitBooking()">Submit Booking Request</button>
+                    <button type="button" class="btn btn-success" id="submitBookingBtn" onclick="submitBooking()">Submit Booking Request</button>
                 </div>
             </div>
         </div>
@@ -901,7 +901,7 @@
             }
 
             // Show loading state
-            const submitBtn = document.querySelector('#bookingModal button[onclick="submitBooking()"]') || event.target;
+            const submitBtn = document.getElementById('submitBookingBtn');
             const originalText = submitBtn ? submitBtn.textContent : 'Submit Booking Request';
             if (submitBtn) {
                 submitBtn.textContent = 'Submitting...';
@@ -948,6 +948,13 @@
                 });
             })
             .then(data => {
+                // Re-enable button immediately
+                const submitBtn = document.getElementById('submitBookingBtn');
+                if (submitBtn) {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
+                
                 if (data.success) {
                     // Show success message
                     showAlert('✅ Booking request submitted successfully! Check your email for confirmation. We will contact you within 24 hours.', 'success');
@@ -978,10 +985,9 @@
             .catch(error => {
                 console.error('Error:', error);
                 showAlert('❌ Error submitting booking. Please try again later.', 'danger');
-            })
-            .finally(() => {
-                // Restore button
-                const submitBtn = document.querySelector('#bookingModal button[onclick="submitBooking()"]') || event.target;
+                
+                // Re-enable button on error
+                const submitBtn = document.getElementById('submitBookingBtn');
                 if (submitBtn) {
                     submitBtn.textContent = originalText;
                     submitBtn.disabled = false;
