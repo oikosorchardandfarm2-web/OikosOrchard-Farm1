@@ -901,10 +901,12 @@
             }
 
             // Show loading state
-            const submitBtn = event.target;
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Submitting...';
-            submitBtn.disabled = true;
+            const submitBtn = document.querySelector('#bookingModal button[onclick="submitBooking()"]') || event.target;
+            const originalText = submitBtn ? submitBtn.textContent : 'Submit Booking Request';
+            if (submitBtn) {
+                submitBtn.textContent = 'Submitting...';
+                submitBtn.disabled = true;
+            }
 
             // Prepare booking data
             const bookingData = {
@@ -979,8 +981,11 @@
             })
             .finally(() => {
                 // Restore button
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
+                const submitBtn = document.querySelector('#bookingModal button[onclick="submitBooking()"]') || event.target;
+                if (submitBtn) {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                }
             });
         }
 
